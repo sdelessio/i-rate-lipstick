@@ -40,8 +40,16 @@ const GoogleSheetsIntegration = () => {
       tokenClient = window.google.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope: SCOPES,
-        callback: '',
+        callback: (resp) => {
+          if (resp.error !== undefined) {
+            throw resp;
+          }
+          document.getElementById('signout_button').style.visibility = 'visible';
+          document.getElementById('authorize_button').innerText = 'Refresh';
+          fetchDataFromSheet();
+        },
       });
+      
       gisInited = true;
       maybeEnableButtons();
     };
@@ -73,6 +81,12 @@ const GoogleSheetsIntegration = () => {
   }
 
   function handleAuthClick() {
+    if (!tokenClient) {
+      console.error('Token client is not initialized. Make sure initialization is complete.');
+      return;
+    }
+  
+    // Rest of the function remains unchanged
     tokenClient.callback = async (resp) => {
       if (resp.error !== undefined) {
         throw resp;
@@ -81,13 +95,15 @@ const GoogleSheetsIntegration = () => {
       document.getElementById('authorize_button').innerText = 'Refresh';
       fetchDataFromSheet();
     };
-
+  
     if (gapi.client.getToken() === null) {
       tokenClient.requestAccessToken({ prompt: 'consent' });
     } else {
       tokenClient.requestAccessToken({ prompt: '' });
     }
   }
+  
+  
 
   const handleStarClick = (starValue) => {
     const newRank = selectedRank === starValue ? null : starValue;
@@ -97,7 +113,7 @@ const GoogleSheetsIntegration = () => {
   function handleStarHover(starValue) {
     // Find the index of the hovered star
     const hoveredStarIndex = [1, 2, 3, 4, 5].indexOf(starValue);
-  
+
     // Add the hovered class to the previous stars and the current hovered star
     for (let i = 0; i <= hoveredStarIndex; i++) {
       const starLabel = document.getElementById(`star-label-${i}`);
@@ -106,7 +122,7 @@ const GoogleSheetsIntegration = () => {
         starLabel.classList.remove('unhovered'); // Remove unhovered class
       }
     }
-  
+
     // Add the unhovered class to the stars after the current hovered star
     for (let i = hoveredStarIndex + 1; i <= 4; i++) {
       const starLabel = document.getElementById(`star-label-${i}`);
@@ -116,7 +132,7 @@ const GoogleSheetsIntegration = () => {
       }
     }
   }
-  
+
   function handleStarLeave() {
     // Remove the hovered class from all stars and add unhovered class
     for (let i = 0; i <= 4; i++) {
@@ -127,7 +143,7 @@ const GoogleSheetsIntegration = () => {
       }
     }
   }
-  
+
 
   function handleSignoutClick() {
     const token = gapi.client.getToken();
@@ -222,6 +238,7 @@ const GoogleSheetsIntegration = () => {
         </button>
       </header>
       <main>
+        <div className="hero"></div>
         <h1>I Eat CNY</h1>
         <div className="search-container">
           <input
@@ -310,6 +327,7 @@ const GoogleSheetsIntegration = () => {
             Show All
           </label>
         </div> */}
+
         <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
           {filteredData.length > 0 ? filteredData.map((row, index) => (
             <Card key={index} name={row[0]} rank={row[1]} notes={row[2]} closed={row[3]} type={row[4]} />
