@@ -1,0 +1,25 @@
+.stars{
+    display: flex;
+    align-items: center;
+    margin: 1em;
+    .star {
+        height: 3em;
+        width: 3em;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+
+    
+        &.full {
+            background-image: url("../../assets/images/fullStar.png")
+        }
+    
+        &.empty {
+            background-image: url("../../assets/images/emptyStar.png")
+        }
+    
+        &.half {
+            background-image: url("../../assets/images/halfStar.png")
+        }
+}
+}

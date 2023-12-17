@@ -1,0 +1,59 @@
+@import "./../../variables.scss";
+
+.card {
+    // border: 1px solid black;
+    width: 50vw;
+    height: 300px;
+    margin: 1em 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $white;
+    color: $black;
+
+}
+
+.card:not(.inactive) {
+    -webkit-box-shadow: 10px 6px 24px -19px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 6px 24px -19px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 6px 24px -19px rgba(0, 0, 0, 0.75);
+}
+
+h2 {
+    margin-bottom: .2em;
+}
+.inactive {
+    opacity: .8;
+    color: $gray;
+}
+
+.type {
+    color: $gray;
+}
+
+.img {
+    height: 5em;
+    width: 5em;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    // margin: 1em;
+
+    &.good {
+        background-image: url("../../assets/images/good.png")
+    }
+
+    &.bad {
+        background-image: url("../../assets/images/bad.png")
+    }
+
+    &.closed {
+        background-image: url("../../assets/images/closed.png")
+    }
+
+    &.question {
+        background-image: url("../../assets/images/question.png")
+    }
+}
