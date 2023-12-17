@@ -21,6 +21,8 @@ const GoogleSheetsIntegration = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [selectedRank, setSelectedRank] = useState(null);
   const [eatenStatus, setEatenStatus] = useState(null);
+  const [unratedStatus, setUnratedStatus] = useState(false);
+
 
   useEffect(() => {
     const script1 = document.createElement('script');
@@ -49,7 +51,7 @@ const GoogleSheetsIntegration = () => {
           fetchDataFromSheet();
         },
       });
-      
+
       gisInited = true;
       maybeEnableButtons();
     };
@@ -85,7 +87,7 @@ const GoogleSheetsIntegration = () => {
       console.error('Token client is not initialized. Make sure initialization is complete.');
       return;
     }
-  
+
     // Rest of the function remains unchanged
     tokenClient.callback = async (resp) => {
       if (resp.error !== undefined) {
@@ -95,15 +97,15 @@ const GoogleSheetsIntegration = () => {
       document.getElementById('authorize_button').innerText = 'Refresh';
       fetchDataFromSheet();
     };
-  
+
     if (gapi.client.getToken() === null) {
       tokenClient.requestAccessToken({ prompt: 'consent' });
     } else {
       tokenClient.requestAccessToken({ prompt: '' });
     }
   }
-  
-  
+
+
 
   const handleStarClick = (starValue) => {
     const newRank = selectedRank === starValue ? null : starValue;
@@ -173,26 +175,30 @@ const GoogleSheetsIntegration = () => {
 
   useEffect(() => {
     // Filter the data based on the search query, rank, and eaten status
+    console.log('eatenStatus');
     const filtered = originalData
       .filter((row) => row[0] && row[0].toLowerCase().includes(searchQuery.toLowerCase()))
       .filter((row) => {
         if (selectedRank !== null) {
-          // Check if the restaurant's rank is equal to the selected rank or falls within the half-star range
           const lowerBound = selectedRank - 0.5;
           const upperBound = selectedRank;
           const restaurantRank = parseFloat(row[1]);
           return restaurantRank >= lowerBound && restaurantRank <= upperBound;
-        }
-        return true;
-      })
-      .filter((row) => {
-        if (eatenStatus === 'eaten') {
-          return !row[1];
         } else if (eatenStatus === 'notEaten') {
+          return !row[1]
+        } else if (eatenStatus === 'eaten') {
           return row[1];
         }
         return true;
-      });
+      })
+    // .filter((row) => {
+    //   if (eatenStatus === 'eaten') {
+    //     return !row[1];
+    //   } else if (eatenStatus === 'notEaten') {
+    //     return row[1];
+    //   }
+    //   return true;
+    // });
 
     setFilteredData(filtered);
   }, [searchQuery, selectedRank, eatenStatus, originalData]);
@@ -213,7 +219,7 @@ const GoogleSheetsIntegration = () => {
     }
     const range = response.result;
     if (!range || !range.values || range.values.length === 0) {
-      document.getElementById('content').innerText = 'No values found.';
+      document.getElementById('content').innerText = 'Nothing here yet.';
       return;
     }
 
@@ -240,6 +246,7 @@ const GoogleSheetsIntegration = () => {
       <main>
         <div className="hero"></div>
         <h1>I Eat CNY</h1>
+        <h2>Reviewing the food in Central New York</h2>
         <div className="search-container">
           <input
             type="text"
@@ -252,19 +259,20 @@ const GoogleSheetsIntegration = () => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="currentColor"
+              stroke="#e8e6e6"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <circle cx="11" cy="11" r="8" fill="#e8e6e6" /> {/* Set the fill to white here */}
+              <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </div>
         </div>
 
 
-        <div className="stars">
+        <div className="rank-container">
+          <div  className="star-radios">
           {[1, 2, 3, 4, 5].map((starValue, index) => (
             <label
               key={starValue}
@@ -279,59 +287,50 @@ const GoogleSheetsIntegration = () => {
                 value={starValue}
                 className="star-radio"
                 checked={selectedRank === starValue}
-                onChange={() => handleStarClick(starValue)}
+                onChange={() => {
+                  handleStarClick(starValue);
+                  setEatenStatus(null);
+                }}
               />
             </label>
           ))}
+          </div>
+          <div className="circle-radios">
+          <label className="circle-radio">
+            <input
+              type="radio"
+              name="rankFilter"
+              value="unrated"
+              checked={eatenStatus === 'notEaten'}
+              onChange={() => {
+                setSelectedRank(null);
+                setEatenStatus('notEaten');
+              }}
+            />
+            Unrated
+          </label>
           <label className="circle-radio">
             <input
               type="radio"
               name="rankFilter"
               value=""
-              checked={!selectedRank}
-              onChange={() => setSelectedRank(null)}
-            />
-            Show All Reviews
-          </label>
-        </div>
-
-        {/* <div>
-          <label>
-            <input
-              type="radio"
-              name="eatenStatusFilter"
-              value="eaten"
-              checked={eatenStatus === 'eaten'}
-              onChange={() => setEatenStatus('eaten')}
-            />
-            Eaten
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="eatenStatusFilter"
-              value="notEaten"
-              checked={eatenStatus === 'notEaten'}
-              onChange={() => setEatenStatus('notEaten')}
-            />
-            Not Eaten
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="eatenStatusFilter"
-              value=""
-              checked={!eatenStatus}
-              onChange={() => setEatenStatus(null)}
+              checked={!selectedRank && !eatenStatus}
+              onChange={() => {
+                setSelectedRank(null);
+                setEatenStatus(null);
+              }}
             />
             Show All
           </label>
-        </div> */}
+          </div>
+
+        </div>
+
 
         <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
           {filteredData.length > 0 ? filteredData.map((row, index) => (
             <Card key={index} name={row[0]} rank={row[1]} notes={row[2]} closed={row[3]} type={row[4]} />
-          )) : <p>No results</p>}
+          )) : <p className="no-results">No results</p>}
         </pre>
       </main>
     </div>

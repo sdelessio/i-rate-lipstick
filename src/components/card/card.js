@@ -5,11 +5,11 @@ import Rank from "../rank/rank";
 const Card = ({ name, notes, rank, closed, type }) => {
     return (
         <div className={`card ${!rank || closed === "TRUE" ? 'inactive' : ''}`}>
-            <h2>{name}
+            <h3>{name}
                 {closed === "TRUE" && (
                     <span> (Closed)</span>
                 )}
-            </h2>
+            </h3>
             <p className="type">{type}</p>
             <div className={`img ${closed === "TRUE" ? "closed" : (closed === "FALSE" && rank > 2.5) ? 'good' : (!rank ? 'question' : 'bad')}`}></div>
             <p>{notes}</p>

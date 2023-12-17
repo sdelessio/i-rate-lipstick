@@ -1,5 +1,11 @@
+// Common variables
 $primary: #1c0403;
 $secondary: rgb(255, 196, 0);
+
+// Media query variables
+$mq-max-width: 768px;
+
+// Variables with media query adjustments
 $white: mix($primary, white, 10%);
 $black: mix($primary, black, 10%);
 $gray: mix($primary, gray, 10%);

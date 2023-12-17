@@ -4,9 +4,22 @@
   // display: flex;
 }
 
-h1 {
+h1, h2 {
   color: $white;
+}
+
+h1 {
+
   font-size: 4em;
+  margin: 2em 0 .5em;
+
+  @media (max-width: $mq-max-width) {
+    font-size: 3em;
+  }
+}
+
+*:focus {
+  outline-color: $secondary;
 }
 
 body {
@@ -19,6 +32,11 @@ main {
   align-items: center;
   flex: 1;
   overflow-y: auto;
+}
+
+.no-results,
+#content {
+  color: $white;
 }
 
 .hero {
@@ -55,7 +73,7 @@ header {
   // background-color: $black;
   display: flex;
   align-items: center;
-  position: absolute; 
+  position: absolute;
   top: 0;
   justify-content: flex-end;
 
@@ -69,7 +87,7 @@ header {
     border: none;
     border-radius: 4px;
 
-    &:hover{
+    &:hover {
       // background-color: mix($secondary, black, 90%);
       text-decoration: underline;
     }
@@ -84,16 +102,22 @@ header {
 }
 
 input[type="text"] {
-  width: 300px;
+  width: 40vw;
   /* Adjust the width as needed */
-  height: 40px;
+  height: 50px;
   /* Adjust the height as needed */
   border-radius: 100px;
   border: none;
   padding: 0 30px 0 10px;
-
-  background-color: $white;
+  border: 2px solid white;
+  background-color: rgba($black, .3);
+  color: $white;
+  font-weight: bold;
   /* Adjust the padding to make room for the icon */
+
+  &::placeholder {
+    color: $gray;
+  }
 }
 
 .search-icon {
@@ -101,6 +125,22 @@ input[type="text"] {
   right: 10px;
   /* Adjust the distance from the right */
   cursor: pointer;
+}
+
+.rank-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+
+  .star-radios {
+    display: flex;
+    justify-content: center;
+    margin-bottom: .5em;
+  }
+
+  .circle-radios {
+    display: flex;
+  }
 }
 
 /* Optional: Style the SVG icon */
@@ -118,9 +158,16 @@ input[type="text"] {
   align-items: center;
 
   input[type="radio"] {
-    width: 2em;
-    height: 2em;
+    width: 1em;
+    height: 1em;
+
+    @media (max-width: $mq-max-width) {
+      width: 1em;
+      height: 1em;
+    }
   }
+
+
 }
 
 
@@ -132,9 +179,8 @@ input[type="text"] {
 
 .star-label {
   display: inline-block;
-  width: 30px;
-  /* Adjust the width as needed */
-  height: 30px;
+  width: 2em;
+  height: 2em;
   /* Adjust the height as needed */
   background-image: url('./assets/images/emptyStar.png');
   /* Replace with the path to your star icon */

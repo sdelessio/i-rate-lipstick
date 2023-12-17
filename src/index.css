@@ -9,6 +9,6 @@ h1 {
   font-family: 'Playfair Display', serif;
 }
 
-code, p, h2, button {
+code, p, h2, button, #content {
   font-family: 'Poppins', sans-serif;
 }
