@@ -9,7 +9,7 @@ const GoogleSheetsIntegration = () => {
   const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
   const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
   const SPREADSHEET_ID = '1N48O3Ny6rAQiTiaBYubMzip3jylc9GfIbNmehvmNkW4';
-  const RANGE = 'Sheet!A2:E';
+  const RANGE = 'Sheet!A2:F';
 
   let tokenClient;
   let gapiInited = false;
@@ -236,10 +236,10 @@ const GoogleSheetsIntegration = () => {
   return (
     <div>
       <header>
-        <button id="authorize_button" onClick={handleAuthClick}>
+        <button disabled id="authorize_button" onClick={handleAuthClick}>
           Authorize
         </button>
-        <button id="signout_button" onClick={handleSignoutClick}>
+        <button disabled id="signout_button" onClick={handleSignoutClick}>
           Sign Out
         </button>
       </header>
@@ -250,7 +250,7 @@ const GoogleSheetsIntegration = () => {
         <div className="search-container">
           <input
             type="text"
-            placeholder="Search by name"
+            placeholder="Search restaraunts"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -329,7 +329,7 @@ const GoogleSheetsIntegration = () => {
 
         <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
           {filteredData.length > 0 ? filteredData.map((row, index) => (
-            <Card key={index} name={row[0]} rank={row[1]} notes={row[2]} closed={row[3]} type={row[4]} />
+            <Card key={index} name={row[0]} rank={row[1]} notes={row[2]} closed={row[3]} type={row[4]} address={row[5]} />
           )) : <p className="no-results">No results</p>}
         </pre>
       </main>

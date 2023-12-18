@@ -4,7 +4,8 @@
   // display: flex;
 }
 
-h1, h2 {
+h1,
+h2 {
   color: $white;
 }
 
@@ -16,6 +17,10 @@ h1 {
   @media (max-width: $mq-max-width) {
     font-size: 3em;
   }
+}
+
+h2 {
+  text-align: center;
 }
 
 *:focus {
@@ -32,11 +37,16 @@ main {
   align-items: center;
   flex: 1;
   overflow-y: auto;
+
+  @media (max-width: $mq-max-width) {
+    margin: 0 1em;
+  }
 }
 
 .no-results,
 #content {
   color: $white;
+  margin-top: 0;
 }
 
 .hero {
@@ -80,16 +90,21 @@ header {
   button {
     margin: .5em;
     padding: .5em 1em;
-    cursor: pointer;
+    
     background-color: transparent;
     color: $white;
     font-weight: bold;
     border: none;
     border-radius: 4px;
 
-    &:hover {
+    &:disabled {
+      color: $gray;
+    }
+
+    &:hover:not(:disabled) {
       // background-color: mix($secondary, black, 90%);
       text-decoration: underline;
+      cursor: pointer;
     }
   }
 }
@@ -118,6 +133,10 @@ input[type="text"] {
   &::placeholder {
     color: $gray;
   }
+
+  @media (max-width: $mq-max-width) {
+    width: 80vw;
+  }
 }
 
 .search-icon {
@@ -130,7 +149,7 @@ input[type="text"] {
 .rank-container {
   display: flex;
   flex-direction: column;
-  margin: 1em;
+  margin: 1em 0 0;
 
   .star-radios {
     display: flex;
@@ -181,8 +200,9 @@ input[type="text"] {
   display: inline-block;
   width: 2em;
   height: 2em;
+  margin: .1em;
   /* Adjust the height as needed */
-  background-image: url('./assets/images/emptyStar.png');
+  background-image: url('./assets/images/emptyStar3D2.png');
   /* Replace with the path to your star icon */
   background-size: contain;
   cursor: pointer;
@@ -192,7 +212,7 @@ input[type="text"] {
 
 .star-label.selected,
 .hovered {
-  background-image: url('./assets/images/fullStar.png');
+  background-image: url('./assets/images/fullStar3D2.png');
   /* Replace with the path to your star icon */
 }
 

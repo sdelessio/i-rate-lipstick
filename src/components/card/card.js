@@ -2,7 +2,7 @@ import React from 'react';
 import "./card.scss";
 import Rank from "../rank/rank";
 
-const Card = ({ name, notes, rank, closed, type }) => {
+const Card = ({ name, notes, rank, closed, type, address }) => {
     return (
         <div className={`card ${!rank || closed === "TRUE" ? 'inactive' : ''}`}>
             <h3>{name}
@@ -15,6 +15,7 @@ const Card = ({ name, notes, rank, closed, type }) => {
             <p>{notes}</p>
             <Rank rank={rank} />
             {/* <p>{rank} Stars</p> */}
+            <small><p>{address}</p></small>
         </div>
     );
 };

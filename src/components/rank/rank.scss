@@ -9,18 +9,19 @@
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
+        margin: .1em;
 
     
         &.full {
-            background-image: url("../../assets/images/fullStar.png")
+            background-image: url("../../assets/images/fullStar3D2.png")
         }
     
         &.empty {
-            background-image: url("../../assets/images/emptyStar.png")
+            background-image: url("../../assets/images/emptyStar3D2.png")
         }
     
         &.half {
-            background-image: url("../../assets/images/halfStar.png")
+            background-image: url("../../assets/images/halfStar3D2.png")
         }
 }
 }
