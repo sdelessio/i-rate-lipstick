@@ -7,21 +7,21 @@
         height: 3em;
         width: 3em;
         background-position: center;
-        background-size: cover;
+        background-size: contain;
         background-repeat: no-repeat;
         margin: .1em;
 
     
         &.full {
-            background-image: url("../../assets/images/fullStar3D2.png")
+            background-image: url("../../assets/images/fullStar3D.png")
         }
     
         &.empty {
-            background-image: url("../../assets/images/emptyStar3D2.png")
+            background-image: url("../../assets/images/emptyStar3D.png")
         }
     
         &.half {
-            background-image: url("../../assets/images/halfStar3D2.png")
+            background-image: url("../../assets/images/halfStar3D.png")
         }
 }
 }
