@@ -22,6 +22,7 @@ const GoogleSheetsIntegration = () => {
   const [selectedRank, setSelectedRank] = useState(null);
   const [eatenStatus, setEatenStatus] = useState(null);
   const [unratedStatus, setUnratedStatus] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -207,6 +208,8 @@ const GoogleSheetsIntegration = () => {
 
 
   async function fetchDataFromSheet() {
+    setLoading(true);
+
     let response;
     try {
       response = await gapi.client.sheets.spreadsheets.values.get({
@@ -215,21 +218,27 @@ const GoogleSheetsIntegration = () => {
       });
     } catch (err) {
       document.getElementById('content').innerText = err.message;
+      setLoading(false);
       return;
     }
+
     const range = response.result;
     if (!range || !range.values || range.values.length === 0) {
       document.getElementById('content').innerText = 'Nothing here yet.';
+      setLoading(false);
       return;
     }
 
     // Sort the data based on the eaten property
     const sortedData = [...range.values].sort(compareEaten);
 
-
+    // Set the original and filtered data
     setOriginalData(sortedData);
     setFilteredData(sortedData);
+
+    setLoading(false);
   }
+
 
 
 
@@ -272,66 +281,74 @@ const GoogleSheetsIntegration = () => {
 
 
         <div className="rank-container">
-          <div  className="star-radios">
-          {[1, 2, 3, 4, 5].map((starValue, index) => (
-            <label
-              key={starValue}
-              id={`star-label-${index}`}
-              className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
-              onMouseEnter={() => handleStarHover(starValue)}
-              onMouseLeave={handleStarLeave}
-            >
+          <div className="star-radios">
+            {[1, 2, 3, 4, 5].map((starValue, index) => (
+              <label
+                key={starValue}
+                id={`star-label-${index}`}
+                className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
+                onMouseEnter={() => handleStarHover(starValue)}
+                onMouseLeave={handleStarLeave}
+              >
+                <input
+                  type="radio"
+                  name="rankFilter"
+                  value={starValue}
+                  className="star-radio"
+                  checked={selectedRank === starValue}
+                  onChange={() => {
+                    handleStarClick(starValue);
+                    setEatenStatus(null);
+                  }}
+                />
+              </label>
+            ))}
+          </div>
+          <div className="circle-radios">
+            <label className="circle-radio">
               <input
                 type="radio"
                 name="rankFilter"
-                value={starValue}
-                className="star-radio"
-                checked={selectedRank === starValue}
+                value="unrated"
+                checked={eatenStatus === 'notEaten'}
                 onChange={() => {
-                  handleStarClick(starValue);
+                  setSelectedRank(null);
+                  setEatenStatus('notEaten');
+                }}
+              />
+              Unrated
+            </label>
+            <label className="circle-radio">
+              <input
+                type="radio"
+                name="rankFilter"
+                value=""
+                checked={!selectedRank && !eatenStatus}
+                onChange={() => {
+                  setSelectedRank(null);
                   setEatenStatus(null);
                 }}
               />
+              Show All
             </label>
-          ))}
-          </div>
-          <div className="circle-radios">
-          <label className="circle-radio">
-            <input
-              type="radio"
-              name="rankFilter"
-              value="unrated"
-              checked={eatenStatus === 'notEaten'}
-              onChange={() => {
-                setSelectedRank(null);
-                setEatenStatus('notEaten');
-              }}
-            />
-            Unrated
-          </label>
-          <label className="circle-radio">
-            <input
-              type="radio"
-              name="rankFilter"
-              value=""
-              checked={!selectedRank && !eatenStatus}
-              onChange={() => {
-                setSelectedRank(null);
-                setEatenStatus(null);
-              }}
-            />
-            Show All
-          </label>
           </div>
 
         </div>
 
 
-        <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
-          {filteredData.length > 0 ? filteredData.map((row, index) => (
-            <Card key={index} name={row[0]} rank={row[1]} notes={row[2]} closed={row[3]} type={row[4]} address={row[5]} />
-          )) : <p className="no-results">No results</p>}
-        </pre>
+        {loading ? (
+         <div class="lds-hourglass"></div>
+        ) : (
+          <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
+            {filteredData.length > 0 ? (
+              filteredData.map((row, index) => (
+                <Card key={index} name={row[0]} rank={row[1]} notes={row[2]} closed={row[3]} type={row[4]} address={row[5]} />
+              ))
+            ) : (
+              <p className="no-results">No results</p>
+            )}
+          </pre>
+        )}
       </main>
     </div>
 
