@@ -56,7 +56,7 @@ main {
   align-items: center;
   flex: 1;
   height: 500px;
-  background-image: url("./assets/images/rex.jpeg");
+  background-image: url("./assets/images/rex.WebP");
   background-size: cover;
   background-position: center;
   position: fixed;
@@ -202,7 +202,7 @@ input[type="text"] {
   height: 2em;
   margin: .1em;
   /* Adjust the height as needed */
-  background-image: url('./assets/images/emptyStar3D.png');
+  background-image: url('./assets/images/emptyStar3D.WebP');
   /* Replace with the path to your star icon */
   background-size: contain;
   cursor: pointer;
@@ -212,7 +212,7 @@ input[type="text"] {
 
 .star-label.selected,
 .hovered {
-  background-image: url('./assets/images/fullStar.png');
+  background-image: url('./assets/images/fullStar.WebP');
   /* Replace with the path to your star icon */
 }
 
