@@ -141,7 +141,7 @@ header {
     height: 4em;
     width: 4em;
     color: white;
-    background-color: rgba($secondary, .5);
+    background-color: rgba($secondary, 1);
     border-radius: 100%;
     display: flex;
     align-items: center;
@@ -151,7 +151,7 @@ header {
     cursor: pointer;
 
     &:hover {
-      background-color: $secondary;
+      background-color: mix($secondary, black, 85%);
     }
   }
 }
