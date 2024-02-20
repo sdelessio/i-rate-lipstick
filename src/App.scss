@@ -6,7 +6,7 @@
 
 h1,
 h2 {
-  color: $white;
+  color: $primary;;
 }
 
 h1 {
@@ -28,7 +28,7 @@ h2 {
 }
 
 body {
-  background-color: $primary;
+  background-color: $white;
 }
 
 main {
@@ -45,7 +45,7 @@ main {
 
 .no-results,
 #content {
-  color: $white;
+  color: $black;
   margin-top: 0;
 }
 
@@ -55,9 +55,9 @@ main {
   flex-direction: column;
   align-items: center;
   flex: 1;
-  height: 500px;
-  background-image: url("./assets/images/rex.WebP");
-  background-size: cover;
+  height: 100vh;
+  // background-image: url("./assets/images/lip.png");
+  background-size: contain;
   background-position: center;
   position: fixed;
   z-index: -1000;
@@ -69,28 +69,25 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($primary, .4);
+    // background-color: rgba($primary, .4);
   }
 }
 
 label {
-  color: $white;
+  // color: $white;
   font-weight: bold;
 }
 
 header {
-  width: 100%;
-  // background-color: $black;
+  background-color: $black;
   display: flex;
   align-items: center;
-  position: absolute;
-  top: 0;
   justify-content: flex-end;
+  padding: 1em;
 
   button {
     margin: .5em;
     padding: .5em 1em;
-    
     background-color: transparent;
     color: $white;
     font-weight: bold;
@@ -109,6 +106,56 @@ header {
   }
 }
 
+.modal-grid{
+  display: flex;
+}
+
+.rating-container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nested-modal-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.submit-button-container {
+  position: fixed;
+  padding: 1em;
+  bottom: 2em;
+  right: 2em;
+
+  .submit-button{
+    height: 4em;
+    width: 4em;
+    color: white;
+    background-color: rgba($secondary, .5);
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all .5s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $secondary;
+    }
+  }
+}
+
 
 .search-container {
   position: relative;
@@ -119,15 +166,15 @@ header {
 input[type="text"] {
   width: 40vw;
   /* Adjust the width as needed */
-  height: 50px;
+  // height: 50px;
   /* Adjust the height as needed */
-  border-radius: 100px;
-  border: none;
-  padding: 0 30px 0 10px;
-  border: 2px solid white;
-  background-color: rgba($black, .3);
-  color: $white;
-  font-weight: bold;
+  // border-radius: 100px;
+  // border: none;
+  // padding: 0 30px 0 10px;
+  // border: 2px solid white;
+  background-color: white;
+  // color: $white;
+  // font-weight: bold;
   /* Adjust the padding to make room for the icon */
 
   &::placeholder {
@@ -202,7 +249,7 @@ input[type="text"] {
   height: 2em;
   margin: .1em;
   /* Adjust the height as needed */
-  background-image: url('./assets/images/emptyStar3D.WebP');
+  background-image: url('./assets/images/emptyStar3D.webp');
   /* Replace with the path to your star icon */
   background-size: contain;
   cursor: pointer;
@@ -212,7 +259,7 @@ input[type="text"] {
 
 .star-label.selected,
 .hovered {
-  background-image: url('./assets/images/fullStar.WebP');
+  background-image: url('./assets/images/fullStar.webp');
   /* Replace with the path to your star icon */
 }
 
