@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./card.scss";
 import Rank from "../rank/rank";
 import Modal from '@mui/material/Modal';
@@ -9,11 +9,11 @@ import { FormControl, FormLabel } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 
-const Card = ({ index, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
+const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedReview, setEditedReview] = useState({ id, url, product_name, star_value, notes, brand, color, price });
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState(url);
+  const [tempImg, setTempImg] = useState(false);
 
   const style = {
     position: 'absolute',
@@ -27,6 +27,10 @@ const Card = ({ index, id, url, product_name, star_value, notes, brand, color, p
     p: 4,
   };
 
+  const refreshForm = () => {
+    setFile(null)
+    setTempImg(false);
+  }
 
   const handleDelete = () => {
     setShowConfirmation(true);
@@ -35,10 +39,13 @@ const Card = ({ index, id, url, product_name, star_value, notes, brand, color, p
   const handleConfirmDelete = () => {
     setShowConfirmation(false);
     setIsEditing(false);
+    refreshForm();
+
     onDelete({ ...editedReview }, url);
   };
 
   const handleCancelDelete = () => {
+    refreshForm();
     setShowConfirmation(false);
   };
 
@@ -48,11 +55,13 @@ const Card = ({ index, id, url, product_name, star_value, notes, brand, color, p
 
   const handleSaveEdit = () => {
     // Pass the updated review data to the parent component
-    onEdit({ ...editedReview });
+    onEdit({ ...editedReview }, url);
     setIsEditing(false);
+    refreshForm();
   };
 
   const handleCancelEdit = () => {
+    refreshForm();
     setIsEditing(false);
     // Reset editedReview state to original values
     setEditedReview({ id, url, product_name, star_value, notes, brand, color, price });
@@ -66,9 +75,13 @@ const Card = ({ index, id, url, product_name, star_value, notes, brand, color, p
     }));
   };
 
-  const handleUploadImage = (event) => {
+  const handleChangeImage = (event) => {
     const file = event.target.files[0];
+    setFile(file);
+    setTempImg(true);
   };
+
+
 
   return (
     <div className={`card ${!star_value ? 'inactive' : ''}`}>
@@ -177,8 +190,10 @@ const Card = ({ index, id, url, product_name, star_value, notes, brand, color, p
             </Grid>
             <Grid item xs={12}>
               {/* Display the uploaded image */}
-              {uploadedImage && <img className="prev-img" src={uploadedImage} alt="Uploaded" />}
-              <input type="file" onChange={handleUploadImage} />
+
+              {url && !tempImg && <img className="prev-img" src={url} alt="Uploaded" />}
+
+              <input type="file" onChange={handleChangeImage} />
             </Grid>
             <Grid item xs={12}>
               <div className="edit-modal-actions">

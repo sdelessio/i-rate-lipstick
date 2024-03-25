@@ -55,7 +55,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
       throw error;
     }
   };
-  
+
 
 
   const handleSubmit = async (event) => {
@@ -66,8 +66,8 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
         console.log(typeof imageURL);
         const updatedFormData = { ...formData, url: imageURL };
         setFormData(updatedFormData);
-        await addReview(updatedFormData); 
-        setFile(null); 
+        await addReview(updatedFormData);
+        setFile(null);
         handleSubmitModalClose();
       } else {
         console.log('No file selected');
@@ -76,18 +76,31 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
       console.error('Error submitting review:', error.message);
     }
   };
-  
-  
-  
 
-  const handleDelete = (deletedReview, imgUrl) => { 
+
+
+
+  const handleDelete = (deletedReview, imgUrl) => {
     const fileRef = ref(storage, imgUrl);
     deleteObject(fileRef);
     deleteReview(deletedReview)
   };
 
-  const handleEdit = async (updatedReview) => {
-    updateReview(updatedReview)
+  const handleEdit = async (updatedReview, imgUrl) => {
+    let updatedFormData;
+    if (file) {
+      if (updatedReview.url !== undefined && updatedReview.url !== '') {
+        const fileRef = ref(storage, imgUrl);
+        deleteObject(fileRef);
+      } 
+        const imageURL = await uploadImage();
+        updatedFormData = { ...updatedReview, url: imageURL };
+    } 
+    else {
+      updatedFormData = { ...updatedReview, url: imgUrl };
+    }
+    updateReview(updatedFormData)
+    setFile(null)
   };
 
 
@@ -388,6 +401,8 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                   onDelete={handleDelete}
                   onEdit={handleEdit}
                   user={user}
+                  setFile={setFile}
+                  file={file}
                 />
               ))
             ) : (
