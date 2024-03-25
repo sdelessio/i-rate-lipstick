@@ -53,12 +53,33 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
     setIsEditing(true);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === '-') {
+      if (event.target.value.includes('-') || event.target.selectionStart !== 0) {
+        event.preventDefault();
+      }
+    }
+  };
+  
+  
+
   const handleSaveEdit = () => {
+    // Check if any required fields are empty
+    const requiredFields = ['brand', 'product_name', 'color', 'price', 'notes'];
+    const emptyFields = requiredFields.filter(field => !editedReview[field]);
+
+    // If there are empty required fields, display an error message and prevent saving
+    if (emptyFields.length > 0) {
+      alert(`Please fill in the following required fields: ${emptyFields.join(', ')}`);
+      return;
+    }
+
     // Pass the updated review data to the parent component
     onEdit({ ...editedReview }, url);
     setIsEditing(false);
     refreshForm();
   };
+
 
   const handleCancelEdit = () => {
     refreshForm();
@@ -106,7 +127,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
             <Rank rank={star_value} />
             <p className="notes">{notes}</p>
             {user && <div className="footer">
-              <button className="edit-button" onClick={handleEdit}>Edit</button>
+              <button className="button" onClick={handleEdit}>Edit</button>
             </div>}
           </div>
 
@@ -137,6 +158,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 id="brand"
                 label="Brand"
                 variant="outlined"
+                required
                 value={editedReview.brand}
                 onChange={handleChange}
                 fullWidth
@@ -147,6 +169,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 id="product_name"
                 label="Product"
                 variant="outlined"
+                required
                 value={editedReview.product_name}
                 onChange={handleChange}
                 fullWidth
@@ -157,6 +180,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 id="color"
                 label="Color"
                 variant="outlined"
+                required
                 value={editedReview.color}
                 onChange={handleChange}
                 fullWidth
@@ -168,13 +192,17 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 label="Price ($)"
                 variant="outlined"
                 type="number"
+                required
                 value={editedReview.price}
                 onChange={handleChange}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                InputProps={{ inputProps: { min: 0 } }}
+                onKeyDown={handleKeyDown}
                 fullWidth
               />
+
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -182,6 +210,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 label="Notes"
                 variant="outlined"
                 multiline
+                required
                 rows={4}
                 value={editedReview.notes}
                 onChange={handleChange}
@@ -200,7 +229,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 <Button onClick={handleDelete}>Delete</Button>
                 <div>
                   <Button onClick={handleCancelEdit}>Cancel</Button>
-                  <Button variant="contained" onClick={handleSaveEdit}>Save</Button>
+                  <button className="button" onClick={handleSaveEdit}>Save</button>
                 </div>
               </div>
             </Grid>

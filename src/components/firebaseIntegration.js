@@ -92,10 +92,10 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
       if (updatedReview.url !== undefined && updatedReview.url !== '') {
         const fileRef = ref(storage, imgUrl);
         deleteObject(fileRef);
-      } 
-        const imageURL = await uploadImage();
-        updatedFormData = { ...updatedReview, url: imageURL };
-    } 
+      }
+      const imageURL = await uploadImage();
+      updatedFormData = { ...updatedReview, url: imageURL };
+    }
     else {
       updatedFormData = { ...updatedReview, url: imgUrl };
     }
@@ -169,6 +169,12 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
     }
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === '-' && (!event.target.value || event.target.value.startsWith('-'))) {
+      event.preventDefault();
+    }
+  };
+
 
   useEffect(() => {
     // Filter the data based on the search query, rank, and eaten status
@@ -231,6 +237,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                       id="brand"
                       label="Brand"
                       variant="outlined"
+                      required
                       value={formData.brand}
                       onChange={handleChange}
                       fullWidth
@@ -240,6 +247,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                       id="product_name"
                       label="Product Name"
                       variant="outlined"
+                      required
                       value={formData.product_name}
                       onChange={handleChange}
                       fullWidth
@@ -250,6 +258,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                       id="color"
                       label="Color"
                       variant="outlined"
+                      required
                       value={formData.color}
                       onChange={handleChange}
                       fullWidth
@@ -261,19 +270,24 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                       label="Price ($)"
                       variant="outlined"
                       type="number"
+                      required
                       value={formData.price}
                       onChange={handleChange}
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      InputProps={{ inputProps: { min: 0 } }}
+                      onKeyDown={handleKeyDown}
                       fullWidth
                     />
+
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       id="notes"
                       label="Notes"
                       variant="outlined"
+                      required
                       multiline
                       rows={4}
                       value={formData.notes}
@@ -291,9 +305,9 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                       <Button onClick={handleSubmitModalClose} sx={{ mt: 2 }}>
                         Cancel
                       </Button>
-                      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                      <button className="button" type="submit" sx={{ mt: 2 }}>
                         Submit
-                      </Button>
+                      </button>
 
                     </div>
                   </Grid>

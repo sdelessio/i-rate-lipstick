@@ -211,6 +211,20 @@ header {
   }
 }
 
+.button {
+  background-color: $secondary;
+  color: $white !important;
+  border: none;
+  padding: .8em 1.2em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+      background-color: mix($secondary, $black, 85%);
+  }
+}
+
 
 
 .search-rank-container {
