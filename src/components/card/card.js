@@ -9,10 +9,11 @@ import { FormControl, FormLabel } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 
-const Card = ({ index, id, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
+const Card = ({ index, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedReview, setEditedReview] = useState({ id, product_name, star_value, notes, brand, color, price });
+  const [editedReview, setEditedReview] = useState({ id, url, product_name, star_value, notes, brand, color, price });
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(url);
 
   const style = {
     position: 'absolute',
@@ -34,7 +35,7 @@ const Card = ({ index, id, product_name, star_value, notes, brand, color, price,
   const handleConfirmDelete = () => {
     setShowConfirmation(false);
     setIsEditing(false);
-    onDelete({ ...editedReview });
+    onDelete({ ...editedReview }, url);
   };
 
   const handleCancelDelete = () => {
@@ -54,7 +55,7 @@ const Card = ({ index, id, product_name, star_value, notes, brand, color, price,
   const handleCancelEdit = () => {
     setIsEditing(false);
     // Reset editedReview state to original values
-    setEditedReview({ id, product_name, star_value, notes, brand, color, price });
+    setEditedReview({ id, url, product_name, star_value, notes, brand, color, price });
   };
 
   const handleChange = (e) => {
@@ -65,36 +66,40 @@ const Card = ({ index, id, product_name, star_value, notes, brand, color, price,
     }));
   };
 
+  const handleUploadImage = (event) => {
+    const file = event.target.files[0];
+  };
+
   return (
     <div className={`card ${!star_value ? 'inactive' : ''}`}>
       <div className="inner-card">
-      <div className="card-content">
-       
-        <div className="uploaded-img">
-        <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div>
+        <div className="card-content">
+
+          <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}>
+            <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div>
+          </div>
+          <div className="details">
+            <h2 className="brand">{brand}</h2>
+            <h3 className="product">{product_name}</h3>
+            <div className="chips">
+              <div className="chip-span">
+                <p className="price chip">${price}</p>
+              </div>
+              <div className="chip-span">
+                {/* <div className="color-circle"></div> */}
+                <p className="color chip">{color}</p>
+              </div>
+            </div>
+            <Rank rank={star_value} />
+            <p className="notes">{notes}</p>
+            {user && <div className="footer">
+              <button className="edit-button" onClick={handleEdit}>Edit</button>
+            </div>}
+          </div>
+
         </div>
-        <div className="details">
-          <h2 className="brand">{brand}</h2>
-          <h3 className="product">{product_name}</h3>
-          <div className="chips">
-          <div className="chip-span">
-          <p className="price chip">${price}</p>
-          </div>
-          <div className="chip-span">
-          {/* <div className="color-circle"></div> */}
-          <p className="color chip">{color}</p>
-          </div>
-          </div>
-          <Rank rank={star_value} />
-          <p className="notes">{notes}</p>
-          {user && <div className="footer">
-      <button className="edit-button" onClick={handleEdit}>Edit</button>
-      </div>}
-        </div>  
-   
-      </div>
-      
-   
+
+
       </div>
 
       {/* Render modal for editing */}
@@ -169,6 +174,11 @@ const Card = ({ index, id, product_name, star_value, notes, brand, color, price,
                 onChange={handleChange}
                 fullWidth
               />
+            </Grid>
+            <Grid item xs={12}>
+              {/* Display the uploaded image */}
+              {uploadedImage && <img className="prev-img" src={uploadedImage} alt="Uploaded" />}
+              <input type="file" onChange={handleUploadImage} />
             </Grid>
             <Grid item xs={12}>
               <div className="edit-modal-actions">

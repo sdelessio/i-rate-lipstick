@@ -48,6 +48,7 @@ const App = () => {
     color: '',
     star_value: 0,
     id: '',
+    url: '',
   });
 
   const resetFormData =() => {
@@ -59,6 +60,7 @@ const App = () => {
       color: '',
       star_value: 0,
       id: '',
+      url: '',
     });
   }
 
@@ -91,6 +93,9 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
+
+  
+
   useEffect(() => {
     const fetchReviews = async () => {
       if (user) {
@@ -116,6 +121,8 @@ const App = () => {
       console.error("Error adding review:", error);
     }
   };
+  
+  
 
 
   const updateReview = async (updatedReview) => {
@@ -157,7 +164,6 @@ const App = () => {
     <div className="app">
       <header>
         <h1>I rate Lipstick</h1>
-        
         {user ? (
           <>
             <Button

@@ -12,7 +12,8 @@ import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Grid from '@mui/material/Grid';
-import 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+
 
 const style = {
   position: 'absolute',
@@ -28,25 +29,60 @@ const style = {
 
 const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmitModalOpen, handleSubmitModalClose, submitModalOpen, setSubmitModalOpen, updateReview, setLipstickReviews, lipstickReviews, addReview, user }) => {
 
+  const storage = getStorage();
+  const storageRef = ref(storage, 'gs://i-rate-lipstick.appspot.com');
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setFile(file);
+  };
 
   const handleChange = (event) => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
   };
 
+  const uploadImage = async () => {
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `images/${file.name}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      console.log('Image uploaded successfully');
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  };
+  
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await addReview(formData); // Call the addReview function passed from App component
-      handleSubmitModalClose();
+      if (file) {
+        const imageURL = await uploadImage();
+        console.log(typeof imageURL);
+        const updatedFormData = { ...formData, url: imageURL };
+        setFormData(updatedFormData);
+        await addReview(updatedFormData); 
+        setFile(null); 
+        handleSubmitModalClose();
+      } else {
+        console.log('No file selected');
+      }
     } catch (error) {
-      console.error("Error submitting review:", error.message);
+      console.error('Error submitting review:', error.message);
     }
   };
+  
+  
+  
 
-  const handleDelete = (deletedReview) => {
+  const handleDelete = (deletedReview, imgUrl) => { 
+    const fileRef = ref(storage, imgUrl);
+    deleteObject(fileRef);
     deleteReview(deletedReview)
   };
 
@@ -84,7 +120,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
     setSelectedRank(newRank);
   };
 
-  
+
 
   function handleStarHover(starValue) {
     // Find the index of the hovered star
@@ -233,7 +269,9 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                     />
                   </Grid>
                   <Grid item x={12}>
-                  <input type="file" />
+                    <Grid item xs={12}>
+                      <input type="file" onChange={handleFileChange} />
+                    </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <div className="submit-modal-actions">
@@ -254,31 +292,31 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
 
         {/* <p>Reviewing the lipsticks I have so I stop buying garbage</p> */}
         <div className="search-rank-container">
-        <div className="rank-container">
-          <div className="star-radios">
-            {[1, 2, 3, 4, 5].map((starValue, index) => (
-              <label
-                key={starValue}
-                id={`star-label-${index}`}
-                className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
-                onMouseEnter={() => handleStarHover(starValue)}
-                onMouseLeave={handleStarLeave}
-              >
-                <input
-                  type="radio"
-                  name="rankFilter"
-                  value={starValue}
-                  className="star-radio"
-                  checked={selectedRank === starValue}
-                  onChange={() => {
-                    handleStarClick(starValue);
-                  }}
-                />
-              </label>
-            ))}
-          </div>
-          <div className="circle-radios">
-            {/* <label className="circle-radio">
+          <div className="rank-container">
+            <div className="star-radios">
+              {[1, 2, 3, 4, 5].map((starValue, index) => (
+                <label
+                  key={starValue}
+                  id={`star-label-${index}`}
+                  className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
+                  onMouseEnter={() => handleStarHover(starValue)}
+                  onMouseLeave={handleStarLeave}
+                >
+                  <input
+                    type="radio"
+                    name="rankFilter"
+                    value={starValue}
+                    className="star-radio"
+                    checked={selectedRank === starValue}
+                    onChange={() => {
+                      handleStarClick(starValue);
+                    }}
+                  />
+                </label>
+              ))}
+            </div>
+            <div className="circle-radios">
+              {/* <label className="circle-radio">
               <input
                 type="radio"
                 name="rankFilter"
@@ -290,47 +328,47 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
               />
               Unrated
             </label> */}
-            <label className="circle-radio">
-              <input
-                type="radio"
-                name="rankFilter"
-                value=""
-                checked={!selectedRank}
-                onChange={() => {
-                  setSelectedRank(null);
-                }}
-              />
-              Show All
-            </label>
-          </div>
+              <label className="circle-radio">
+                <input
+                  type="radio"
+                  name="rankFilter"
+                  value=""
+                  checked={!selectedRank}
+                  onChange={() => {
+                    setSelectedRank(null);
+                  }}
+                />
+                Show All
+              </label>
+            </div>
 
-        </div>
-        <div className="search-container">
-        <div className="search-icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#afb4bc"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
           </div>
-          <input
-            id="search"
-            label="Search reviews"
-            variant="filled"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            fullWidth
-            placeholder="Search review"
-          />
-         
-        </div>
+          <div className="search-container">
+            <div className="search-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#afb4bc"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </div>
+            <input
+              id="search"
+              label="Search reviews"
+              variant="filled"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              fullWidth
+              placeholder="Search review"
+            />
+
+          </div>
         </div>
 
 

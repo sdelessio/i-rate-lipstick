@@ -12,13 +12,15 @@
     border-top: 1px solid $gray;
     padding: 3em 0em;
 
+    
+
 
     &:last-child {
         border-bottom: 1px solid $gray;
     }
 
 
-
+ 
 
     @media (max-width: $mq-max-width) {
         // width: 90vw;
@@ -41,7 +43,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        background-size: contain;
+        background-repeat:no-repeat;
     }
+
+  
 
     h2,
     h3,
@@ -192,4 +198,8 @@
     // -webkit-box-shadow: 10px 6px 24px -19px rgba(0, 0, 0, 0.75);
     // -moz-box-shadow: 10px 6px 24px -19px rgba(0, 0, 0, 0.75);
     // box-shadow: 10px 6px 24px -19px rgba(0, 0, 0, 0.75);
+}
+
+.prev-img {
+    height: 3em;
 }
