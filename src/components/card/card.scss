@@ -12,7 +12,7 @@
     border-top: 1px solid $gray;
     padding: 3em 0em;
 
-    
+
 
 
     &:last-child {
@@ -20,7 +20,7 @@
     }
 
 
- 
+
 
     @media (max-width: $mq-max-width) {
         // width: 90vw;
@@ -35,7 +35,7 @@
         align-items: center;
     }
 
-    .uploaded-img{
+    .uploaded-img {
         height: 200px;
         width: 150px;
         // background-color: $gray;
@@ -44,10 +44,10 @@
         align-items: center;
         justify-content: center;
         background-size: contain;
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
     }
 
-  
+
 
     h2,
     h3,
@@ -63,6 +63,12 @@
 
     h3 {
         font-size: 1.4em;
+    }
+
+    h2,
+    h3,
+    .color {
+        text-transform: capitalize;
     }
 
     p {
@@ -98,7 +104,7 @@
         font-family: $body-font;
     }
 
- 
+
 
     .chip-span {
         display: flex;

@@ -60,21 +60,10 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
       }
     }
   };
-  
-  
+
+
 
   const handleSaveEdit = () => {
-    // Check if any required fields are empty
-    const requiredFields = ['brand', 'product_name', 'color', 'price', 'notes'];
-    const emptyFields = requiredFields.filter(field => !editedReview[field]);
-
-    // If there are empty required fields, display an error message and prevent saving
-    if (emptyFields.length > 0) {
-      alert(`Please fill in the following required fields: ${emptyFields.join(', ')}`);
-      return;
-    }
-
-    // Pass the updated review data to the parent component
     onEdit({ ...editedReview }, url);
     setIsEditing(false);
     refreshForm();
@@ -116,12 +105,13 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
             <h2 className="brand">{brand}</h2>
             <h3 className="product">{product_name}</h3>
             <div className="chips">
-              <div className="chip-span">
-                <p className="price chip">${price}</p>
-              </div>
+             
               <div className="chip-span">
                 {/* <div className="color-circle"></div> */}
                 <p className="color chip">{color}</p>
+              </div>
+              <div className="chip-span">
+                <p className="price chip">${price}</p>
               </div>
             </div>
             <Rank rank={star_value} />
@@ -162,6 +152,9 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 value={editedReview.brand}
                 onChange={handleChange}
                 fullWidth
+                error={editedReview.brand === ""}
+                helperText={editedReview.brand === "" ? "This field is required" : ""}
+                FormHelperTextProps={{ sx: { ml: 0 } }}
               />
             </Grid>
             <Grid item xs={7}>
@@ -173,6 +166,9 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 value={editedReview.product_name}
                 onChange={handleChange}
                 fullWidth
+                error={editedReview.product_name === ""}
+                helperText={editedReview.product_name === "" ? "This field is required" : ""}
+                FormHelperTextProps={{ sx: { ml: 0 } }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -184,6 +180,9 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 value={editedReview.color}
                 onChange={handleChange}
                 fullWidth
+                error={editedReview.color === ""}
+                helperText={editedReview.color === "" ? "This field is required" : ""}
+                FormHelperTextProps={{ sx: { ml: 0 } }}
               />
             </Grid>
             <Grid item xs={6}>
@@ -201,6 +200,9 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 InputProps={{ inputProps: { min: 0 } }}
                 onKeyDown={handleKeyDown}
                 fullWidth
+                error={editedReview.price === ""}
+                helperText={editedReview.price === "" ? "This field is required" : ""}
+                FormHelperTextProps={{ sx: { ml: 0 } }}
               />
 
             </Grid>
@@ -215,6 +217,9 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 value={editedReview.notes}
                 onChange={handleChange}
                 fullWidth
+                error={editedReview.notes === ""}
+                helperText={editedReview.notes === "" ? "This field is required" : ""}
+                FormHelperTextProps={{ sx: { ml: 0 } }}
               />
             </Grid>
             <Grid item xs={12}>

@@ -211,6 +211,11 @@ header {
   }
 }
 
+.error-message {
+  color: red;
+  margin: 5px 0 0 0;
+}
+
 .button {
   background-color: $secondary;
   color: $white !important;
