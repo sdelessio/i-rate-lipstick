@@ -4,15 +4,33 @@
   // display: flex;
 }
 
+main, p {
+  // font-family: $body-font;
+  // width: 80vw;
+}
+
+.body {
+  max-width: 960px;
+  border-right: 1px solid $gray;
+  border-left: 1px solid $gray;
+  margin: 0 auto;
+}
+
+
 h1,
-h2 {
-  color: $primary;;
+h2, h3, p {
+  font-family: $display-font;
+  font-weight: 300;
+}
+
+h2, h3, p {
+  color: $primary;
 }
 
 h1 {
-
-  font-size: 4em;
-  margin: 2em 0 .5em;
+  color: $white;
+  margin: 0;
+  font-size: 2em;
 
   @media (max-width: $mq-max-width) {
     font-size: 3em;
@@ -24,7 +42,8 @@ h2 {
 }
 
 *:focus {
-  outline-color: $secondary;
+  outline: max(2px, 0.15em) solid $secondary;
+  outline-offset: max(2px, 0.15em);
 }
 
 body {
@@ -47,20 +66,58 @@ main {
 #content {
   color: $black;
   margin-top: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.circle-radio{
+  margin: 0em .25em;
+
+input[type="radio"] {
+  appearance: none;
+  background-color: #fff;
+  margin: 0;
+  margin-right: .2em;
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.1em solid $secondary;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em $secondary;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+
 }
 
 .hero {
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  height: 100vh;
-  // background-image: url("./assets/images/lip.png");
-  background-size: contain;
-  background-position: center;
-  position: fixed;
-  z-index: -1000;
+  // width: 100vw;
+  // display: flex;
+  // flex-direction: row;
+  // align-items: center;
+  // flex: 1;
+  // height: 100vh;
+  // // background-image: url("./assets/images/lip.png");
+  // background-size: contain;
+  // background-position: center;
+  // position: fixed;
+  // z-index: -1000;
 
   &::before {
     content: '';
@@ -75,14 +132,13 @@ main {
 
 label {
   // color: $white;
-  font-weight: bold;
 }
 
 header {
-  background-color: $black;
+  background-color: $primary;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 1em;
 
   button {
@@ -90,7 +146,6 @@ header {
     padding: .5em 1em;
     background-color: transparent;
     color: $white;
-    font-weight: bold;
     border: none;
     border-radius: 4px;
 
@@ -157,11 +212,55 @@ header {
 }
 
 
-.search-container {
-  position: relative;
+
+.search-rank-container {
+  width: 100%;
   display: flex;
-  align-items: center;
+  justify-content: space-around;
+  padding: 1em;
+  align-items:center;
+
+
+  .search-container {
+    position: relative;
+  font-family: $primary;
+   
+
+    #search {
+      background-color: #e8e8e8;
+      // padding-left: 30px;
+      padding: 1em 2.4em;
+      border: none;
+      border-radius: 4px;
+      width: 300px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px; 
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px; 
+      height: 20px;
+    }
+  }
+  .rank-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    // margin: 1em 0 0;
+  
+    .star-radios {
+      display: flex;
+      justify-content: center;
+    }
+  
+    .circle-radios {
+      display: flex;
+    }
+  }
 }
+
 
 input[type="text"] {
   width: 40vw;
@@ -169,7 +268,7 @@ input[type="text"] {
   // height: 50px;
   /* Adjust the height as needed */
   // border-radius: 100px;
-  // border: none;
+  border: none !important;
   // padding: 0 30px 0 10px;
   // border: 2px solid white;
   background-color: white;
@@ -193,21 +292,7 @@ input[type="text"] {
   cursor: pointer;
 }
 
-.rank-container {
-  display: flex;
-  flex-direction: column;
-  margin: 1em 0 0;
 
-  .star-radios {
-    display: flex;
-    justify-content: center;
-    margin-bottom: .5em;
-  }
-
-  .circle-radios {
-    display: flex;
-  }
-}
 
 /* Optional: Style the SVG icon */
 .search-icon svg {
@@ -245,8 +330,8 @@ input[type="text"] {
 
 .star-label {
   display: inline-block;
-  width: 2em;
-  height: 2em;
+  width: 1.5em;
+  height: 1.5em;
   margin: .1em;
   /* Adjust the height as needed */
   background-image: url('./assets/images/emptyStar3D.webp');

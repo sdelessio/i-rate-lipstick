@@ -12,6 +12,7 @@ import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Grid from '@mui/material/Grid';
+import 'firebase/storage';
 
 const style = {
   position: 'absolute',
@@ -59,6 +60,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
   const [originalData, setOriginalData] = useState(lipstickReviews);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedRank, setSelectedRank] = useState(null);
+  const [file, setFile] = useState(null);
   const [eatenStatus, setEatenStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -81,6 +83,8 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
     const newRank = selectedRank === starValue ? null : starValue;
     setSelectedRank(newRank);
   };
+
+  
 
   function handleStarHover(starValue) {
     // Find the index of the hovered star
@@ -144,10 +148,8 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
 
 
   return (
-    <div>
+    <div className="body">
       <main>
-        <div className="hero"></div>
-        <h1>I Eat Lipstick</h1>
         <Modal
           open={submitModalOpen}
           onClose={handleSubmitModalClose}
@@ -230,6 +232,9 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                       fullWidth
                     />
                   </Grid>
+                  <Grid item x={12}>
+                  <input type="file" />
+                  </Grid>
                   <Grid item xs={12}>
                     <div className="submit-modal-actions">
                       <Button onClick={handleSubmitModalClose} sx={{ mt: 2 }}>
@@ -247,33 +252,8 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
           </Box>
         </Modal>
 
-        <h2>Reviewing the lipsticks I have so I stop buying garbage</h2>
-        <div className="search-container">
-          <TextField
-            id="search"
-            label="Search reviews"
-            // variant="filled"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            fullWidth
-          />
-          <div className="search-icon">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#e8e6e6"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </div>
-        </div>
-
-
+        {/* <p>Reviewing the lipsticks I have so I stop buying garbage</p> */}
+        <div className="search-rank-container">
         <div className="rank-container">
           <div className="star-radios">
             {[1, 2, 3, 4, 5].map((starValue, index) => (
@@ -298,7 +278,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
             ))}
           </div>
           <div className="circle-radios">
-            <label className="circle-radio">
+            {/* <label className="circle-radio">
               <input
                 type="radio"
                 name="rankFilter"
@@ -309,7 +289,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                 }}
               />
               Unrated
-            </label>
+            </label> */}
             <label className="circle-radio">
               <input
                 type="radio"
@@ -325,6 +305,36 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
           </div>
 
         </div>
+        <div className="search-container">
+        <div className="search-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#afb4bc"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+          <input
+            id="search"
+            label="Search reviews"
+            variant="filled"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            fullWidth
+            placeholder="Search review"
+          />
+         
+        </div>
+        </div>
+
+
+
 
 
         {loading ? (

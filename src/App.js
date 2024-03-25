@@ -156,6 +156,8 @@ const App = () => {
   return (
     <div className="app">
       <header>
+        <h1>I rate Lipstick</h1>
+        
         {user ? (
           <>
             <Button

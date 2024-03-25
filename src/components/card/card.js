@@ -67,32 +67,41 @@ const Card = ({ index, id, product_name, star_value, notes, brand, color, price,
 
   return (
     <div className={`card ${!star_value ? 'inactive' : ''}`}>
-      <p className="price">${price}</p>
       <div className="inner-card">
+      <div className="card-content">
+       
+        <div className="uploaded-img">
         <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div>
+        </div>
         <div className="details">
-          <p className="brand">{brand}</p>
-          <p className="product">{product_name}</p>
-          <div className="color-span">
-          <div className="color-circle"></div>
-          <p className="color">{color}</p>
+          <h2 className="brand">{brand}</h2>
+          <h3 className="product">{product_name}</h3>
+          <div className="chips">
+          <div className="chip-span">
+          <p className="price chip">${price}</p>
+          </div>
+          <div className="chip-span">
+          {/* <div className="color-circle"></div> */}
+          <p className="color chip">{color}</p>
+          </div>
           </div>
           <Rank rank={star_value} />
-        
+          <p className="notes">{notes}</p>
+          {user && <div className="footer">
+      <button className="edit-button" onClick={handleEdit}>Edit</button>
+      </div>}
         </div>  
    
       </div>
-      <p className="notes">{notes}</p>
-      {user && <div className="footer">
-      <Button variant="outlined" onClick={handleEdit}>Edit</Button>
-      </div>}
-
+      
+   
+      </div>
 
       {/* Render modal for editing */}
       <Modal open={isEditing} onClose={handleCancelEdit}>
         <Box sx={style}>
           <Grid container rowSpacing={1} columnSpacing={1} >
-            <h2>Edit Review</h2>
+            <h3>Edit Review</h3>
             <Grid item xs={12}>
               <FormControl component="fieldset">
                 <FormLabel component="legend">Rating</FormLabel>
@@ -175,7 +184,7 @@ const Card = ({ index, id, product_name, star_value, notes, brand, color, price,
       </Modal>
       <Modal open={showConfirmation} onClose={handleCancelDelete}>
         <Box sx={style}>
-          <h2>Are you sure?</h2>
+          <h3>Are you sure?</h3>
           <Grid item xs={12}>
             <div className="nested-modal-actions">
               <Button variant="contained" onClick={handleCancelDelete}>Cancel</Button>

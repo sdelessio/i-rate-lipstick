@@ -1,11 +1,14 @@
 // Common variables
-$primary: rgb(28, 3, 24);
-$secondary: rgb(227, 29, 184);
+$primary: #0f1728;
+$secondary: #bf2146;
 
 // Media query variables
 $mq-max-width: 768px;
 
 // Variables with media query adjustments
-$white: mix($primary, white, 10%);
+$white: #f4f4f4;
 $black: mix($primary, black, 10%);
 $gray: mix($primary, lightgray, 10%);
+
+$body-font: 'Lora', serif;
+$display-font: 'Quicksand', sans-serif;
