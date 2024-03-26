@@ -40,8 +40,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRank, setSelectedRank] = useState(null);
+  const [fileName, setFileName] = useState(null);
 
   const [formData, setFormData] = useState({
     brand: '',
@@ -55,7 +54,7 @@ const App = () => {
     hex: '',
   });
 
-  const resetFormData =() => {
+  const resetFormData = () => {
     setFormData({
       brand: '',
       product_name: '',
@@ -70,8 +69,10 @@ const App = () => {
   }
 
   const handleSubmitModalOpen = () => {
-    setSubmitModalOpen(true);};
+    setSubmitModalOpen(true);
+  };
   const handleSubmitModalClose = () => {
+    setFileName(null);
     resetFormData();
     setSubmitModalOpen(false);
   };
@@ -99,7 +100,7 @@ const App = () => {
   }, []);
 
 
-  
+
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -126,8 +127,8 @@ const App = () => {
       console.error("Error adding review:", error);
     }
   };
-  
-  
+
+
 
 
   const updateReview = async (updatedReview) => {
@@ -164,46 +165,7 @@ const App = () => {
     }
   };
 
-  const handleStarClick = (starValue) => {
-    const newRank = selectedRank === starValue ? null : starValue;
-    setSelectedRank(newRank);
-  };
 
-
-
-  function handleStarHover(starValue) {
-    // Find the index of the hovered star
-    const hoveredStarIndex = [1, 2, 3, 4, 5].indexOf(starValue);
-
-    // Add the hovered class to the previous stars and the current hovered star
-    for (let i = 0; i <= hoveredStarIndex; i++) {
-      const starLabel = document.getElementById(`star-label-${i}`);
-      if (starLabel) {
-        starLabel.classList.add('hovered');
-        starLabel.classList.remove('unhovered'); // Remove unhovered class
-      }
-    }
-
-    // Add the unhovered class to the stars after the current hovered star
-    for (let i = hoveredStarIndex + 1; i <= 4; i++) {
-      const starLabel = document.getElementById(`star-label-${i}`);
-      if (starLabel) {
-        starLabel.classList.remove('hovered');
-        starLabel.classList.add('unhovered'); // Add unhovered class
-      }
-    }
-  }
-
-  function handleStarLeave() {
-    // Remove the hovered class from all stars and add unhovered class
-    for (let i = 0; i <= 4; i++) {
-      const starLabel = document.getElementById(`star-label-${i}`);
-      if (starLabel) {
-        starLabel.classList.remove('hovered');
-        starLabel.classList.remove('unhovered');
-      }
-    }
-  }
 
 
 
@@ -211,131 +173,67 @@ const App = () => {
     <div className="app">
       <header>
 
-        <h1>I rate Lipstick</h1>
+        <div className="title-container"><div className="logo"></div><h1>I Rate Lipstick</h1></div>
         <div className="header-inner">
-        <div className="search-rank-container">
-        <div className="rank-container">
-            <div className="star-radios">
-              {[1, 2, 3, 4, 5].map((starValue, index) => (
-                <label
-                  key={starValue}
-                  id={`star-label-${index}`}
-                  className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
-                  onMouseEnter={() => handleStarHover(starValue)}
-                  onMouseLeave={handleStarLeave}
-                >
-                  <input
-                    type="radio"
-                    name="rankFilter"
-                    value={starValue}
-                    className="star-radio"
-                    checked={selectedRank === starValue}
-                    onChange={() => {
-                      handleStarClick(starValue);
-                    }}
-                  />
-                </label>
-              ))}
-            </div>
-            <div className="circle-radios">
-              {/* <label className="circle-radio">
-              <input
-                type="radio"
-                name="rankFilter"
-                value="unrated"
-                checked={selectedRank === "unrated"}
-                onChange={() => {
-                  setSelectedRank("unrated");
+
+
+
+          {user ? (
+            <>
+              <Button
+                id="user-menu-button"
+                aria-controls={userMenuOpen ? 'user-menu-button' : undefined}
+                aria-haspopup="true"
+                aria-expanded={userMenuOpen ? 'true' : undefined}
+                onClick={handleUserMenuClick}
+                sx={{
+                  bgcolor: '#bf2146',
+                  color: '#fff',
+                  '&:hover': {
+                    bgcolor: '#bf2146'
+                  }
                 }}
-              />
-              Unrated
-            </label> */}
-              <label className="circle-radio">
-                <input
-                  type="radio"
-                  name="rankFilter"
-                  value=""
-                  checked={!selectedRank}
-                  onChange={() => {
-                    setSelectedRank(null);
-                  }}
-                />
-                Show all reviews
-              </label>
-            </div>
-
-          </div>
-        <div className="search-container">
-            <div className="search-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#afb4bc"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
               >
-                <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </div>
-            <input
-              id="search"
-              label="Search reviews"
-              variant="filled"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search review"
-            />
-
-          </div>
-          </div>
-
-
-        {user ? (
-          <>
-            <Button
-              id="user-menu-button"
-              aria-controls={userMenuOpen ? 'user-menu-button' : undefined}
-              aria-haspopup="true"
-              aria-expanded={userMenuOpen ? 'true' : undefined}
-              onClick={handleUserMenuClick}
-            >
-              {user.displayName}
-            </Button>
-            <Menu
-              id="user-menu"
-              aria-labelledby="user-menu"
-              anchorEl={anchorEl}
-              open={userMenuOpen}
-              onClose={handleUserMenuClose}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-            >
-              <MenuItem onClick={handleSubmitModalOpen}>Submit a reivew</MenuItem>
-              <MenuItem onClick={handleSignOut}>Logout</MenuItem>
-            </Menu>
-          </>
-        ) : (
-          <Button variant="contained" onClick={signInWithGoogle}>Sign in with Google</Button>
-        )}
-                  </div>
+                {user.displayName}
+              </Button>
+              <Menu
+                id="user-menu"
+                aria-labelledby="user-menu"
+                anchorEl={anchorEl}
+                open={userMenuOpen}
+                onClose={handleUserMenuClose}
+                
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <MenuItem onClick={handleSubmitModalOpen}>Submit a reivew</MenuItem>
+                <MenuItem onClick={handleSignOut}>Logout</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <Button sx={{
+              bgcolor: '#bf2146',
+              '&:hover': {
+                bgcolor: '#bf2146'
+              }
+            }} variant="contained" onClick={signInWithGoogle}>Sign in with Google</Button>
+          )}
+        </div>
       </header>
 
-      <FirebaseIntegration selectedRank={selectedRank}searchQuery={searchQuery} formData={formData} setFormData={setFormData} deleteReview={deleteReview} handleSubmitModalClose={handleSubmitModalClose} handleSubmitModalOpen={handleSubmitModalOpen} submitModalOpen={submitModalOpen} setSubmitModalOpen={setSubmitModalOpen} user={user} updateReview={updateReview} addReview={addReview} lipstickReviews={lipstickReviews} setLipstickReviews={setLipstickReviews} />
+      <FirebaseIntegration setFileName={setFileName} fileName={fileName} formData={formData} setFormData={setFormData} deleteReview={deleteReview} handleSubmitModalClose={handleSubmitModalClose} handleSubmitModalOpen={handleSubmitModalOpen} submitModalOpen={submitModalOpen} setSubmitModalOpen={setSubmitModalOpen} user={user} updateReview={updateReview} addReview={addReview} lipstickReviews={lipstickReviews} setLipstickReviews={setLipstickReviews} />
       {user &&
         <div className="submit-button-container">
           <Tooltip title="Submit a review">
-          <button onClick={handleSubmitModalOpen} className="submit-button" aria-label="delete">
-            <AddIcon />
-          </button>
+            <button onClick={handleSubmitModalOpen} className="submit-button" aria-label="delete">
+              <AddIcon />
+            </button>
           </Tooltip>
         </div>
       }

@@ -9,8 +9,9 @@ import { FormControl, FormLabel } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 import { CirclePicker } from 'react-color';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const Card = ({ index, hex, lipstickColors, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
+const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedReview, setEditedReview] = useState({ id, url, product_name, star_value, notes, brand, color, price });
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -22,16 +23,19 @@ const Card = ({ index, hex, lipstickColors, setFile, file, id, url, product_name
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 600,
+    maxWidth: '90%', // Ensure modal does not exceed 90% of viewport width
+    maxHeight: '90vh', // Set maximum height to 90% of viewport height
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    overflowY: 'scroll',
+    overflowY: 'auto', // Set overflowY to auto to enable vertical scrolling
     p: 4,
   };
-
+  
   const refreshForm = () => {
     setFile(null)
     setTempImg(false);
+    setFileName(null);
   }
 
   const handleDelete = () => {
@@ -98,6 +102,7 @@ const Card = ({ index, hex, lipstickColors, setFile, file, id, url, product_name
 
   const handleChangeImage = (event) => {
     const file = event.target.files[0];
+    setFileName(file.name)
     setFile(file);
     setTempImg(true);
   };
@@ -217,8 +222,10 @@ const Card = ({ index, hex, lipstickColors, setFile, file, id, url, product_name
               />
             </Grid>
             <Grid item xs={12}>
+              <div className="color-picker"> 
                 <label>Pick the closest color</label>
                 <CirclePicker  color={ editedReview.hex } width={"100%"} colors={lipstickColors} onChange={handleColorChange} />
+                </div>
                 {/* <SliderPicker pointer={"cursor"}/> */}
               </Grid>
             <Grid item xs={12}>
@@ -240,9 +247,33 @@ const Card = ({ index, hex, lipstickColors, setFile, file, id, url, product_name
             <Grid item xs={12}>
               {/* Display the uploaded image */}
 
+              <div className="edit-file-input"> 
               {url && !tempImg && <img className="prev-img" src={url} alt="Uploaded" />}
-
-              <input type="file" onChange={handleChangeImage} />
+              <label htmlFor="upload-button">
+                
+                        <Button
+                          component="span"
+                          variant="contained"
+                          startIcon={<CloudUploadIcon />}
+                          className="button"
+                          sx={{
+                            bgcolor: '#bf2146',
+                            '&:hover': {
+                              bgcolor: '#bf2146'
+                            }
+                          }}
+                        >
+                           {fileName ? fileName : 'Upload file'}
+                        </Button>
+                        <input
+                          id="upload-button"
+                          type="file"
+                          accept=".jpg,.jpeg,.png" // Define accepted file types if needed
+                          style={{ display: 'none' }}
+                          onChange={handleChangeImage}
+                        />
+                      </label>
+                      </div>
             </Grid>
             <Grid item xs={12}>
               <div className="edit-modal-actions">
@@ -258,11 +289,12 @@ const Card = ({ index, hex, lipstickColors, setFile, file, id, url, product_name
       </Modal>
       <Modal open={showConfirmation} onClose={handleCancelDelete}>
         <Box sx={style}>
-          <h3>Are you sure?</h3>
+          <h3 >Are you sure?</h3>
+          <p >This action cannot be undone.</p>
           <Grid item xs={12}>
             <div className="nested-modal-actions">
-              <Button variant="contained" onClick={handleCancelDelete}>Cancel</Button>
-              <Button onClick={handleConfirmDelete}>Delete Review</Button>
+              <Button onClick={handleCancelDelete}>Cancel</Button>
+              <button className="button" onClick={handleConfirmDelete}>Delete Review</button>
             </div>
           </Grid>
         </Box>

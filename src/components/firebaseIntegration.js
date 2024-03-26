@@ -14,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Grid from '@mui/material/Grid';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { CirclePicker } from 'react-color';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 
 const style = {
@@ -22,12 +23,15 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 600,
+  maxWidth: '90%', // Ensure modal does not exceed 90% of viewport width
+  maxHeight: '90vh', // Set maximum height to 90% of viewport height
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  overflowY: 'scroll',
+  overflowY: 'auto', // Set overflowY to auto to enable vertical scrolling
   p: 4,
 };
+
 
 const lipstickColors = [
   // Shades of Red
@@ -83,13 +87,14 @@ const lipstickColors = [
 
 
 
-const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData, deleteReview, handleSubmitModalOpen, handleSubmitModalClose, submitModalOpen, setSubmitModalOpen, updateReview, setLipstickReviews, lipstickReviews, addReview, user }) => {
+const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, deleteReview, handleSubmitModalOpen, handleSubmitModalClose, submitModalOpen, setSubmitModalOpen, updateReview, setLipstickReviews, lipstickReviews, addReview, user }) => {
 
   const storage = getStorage();
   const storageRef = ref(storage, 'gs://i-rate-lipstick.appspot.com');
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    setFileName(file.name);
     setFile(file);
   };
 
@@ -188,7 +193,8 @@ const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData,
 
   const [originalData, setOriginalData] = useState(lipstickReviews);
   const [filteredData, setFilteredData] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRank, setSelectedRank] = useState(null);
   const [file, setFile] = useState(null);
   const [eatenStatus, setEatenStatus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -215,6 +221,47 @@ const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData,
       event.preventDefault();
     }
   };
+
+  const handleStarClick = (starValue) => {
+    const newRank = selectedRank === starValue ? null : starValue;
+    setSelectedRank(newRank);
+  };
+
+
+
+  function handleStarHover(starValue) {
+    // Find the index of the hovered star
+    const hoveredStarIndex = [1, 2, 3, 4, 5].indexOf(starValue);
+
+    // Add the hovered class to the previous stars and the current hovered star
+    for (let i = 0; i <= hoveredStarIndex; i++) {
+      const starLabel = document.getElementById(`star-label-${i}`);
+      if (starLabel) {
+        starLabel.classList.add('hovered');
+        starLabel.classList.remove('unhovered'); // Remove unhovered class
+      }
+    }
+
+    // Add the unhovered class to the stars after the current hovered star
+    for (let i = hoveredStarIndex + 1; i <= 4; i++) {
+      const starLabel = document.getElementById(`star-label-${i}`);
+      if (starLabel) {
+        starLabel.classList.remove('hovered');
+        starLabel.classList.add('unhovered'); // Add unhovered class
+      }
+    }
+  }
+
+  function handleStarLeave() {
+    // Remove the hovered class from all stars and add unhovered class
+    for (let i = 0; i <= 4; i++) {
+      const starLabel = document.getElementById(`star-label-${i}`);
+      if (starLabel) {
+        starLabel.classList.remove('hovered');
+        starLabel.classList.remove('unhovered');
+      }
+    }
+  }
 
 
   useEffect(() => {
@@ -245,7 +292,86 @@ const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData,
 
   return (
     <div className="body">
+
       <main>
+      <div className="search-rank-container">
+            <div className="rank-container">
+              <div className="star-radios">
+                {[1, 2, 3, 4, 5].map((starValue, index) => (
+                  <label
+                    key={starValue}
+                    id={`star-label-${index}`}
+                    className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
+                    onMouseEnter={() => handleStarHover(starValue)}
+                    onMouseLeave={handleStarLeave}
+                  >
+                    <input
+                      type="radio"
+                      name="rankFilter"
+                      value={starValue}
+                      className="star-radio"
+                      checked={selectedRank === starValue}
+                      onChange={() => {
+                        handleStarClick(starValue);
+                      }}
+                    />
+                  </label>
+                ))}
+              </div>
+              <div className="circle-radios">
+                {/* <label className="circle-radio">
+              <input
+                type="radio"
+                name="rankFilter"
+                value="unrated"
+                checked={selectedRank === "unrated"}
+                onChange={() => {
+                  setSelectedRank("unrated");
+                }}
+              />
+              Unrated
+            </label> */}
+                <label className="circle-radio">
+                  <input
+                    type="radio"
+                    name="rankFilter"
+                    value=""
+                    checked={!selectedRank}
+                    onChange={() => {
+                      setSelectedRank(null);
+                    }}
+                  />
+                  Show all reviews
+                </label>
+              </div>
+
+            </div>
+            <div className="search-container">
+              <div className="search-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#afb4bc"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </div>
+              <input
+                id="search"
+                label="Search reviews"
+                variant="filled"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search review"
+              />
+
+            </div>
+          </div>
         <Modal
           open={submitModalOpen}
           onClose={handleSubmitModalClose}
@@ -324,8 +450,10 @@ const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData,
 
                   </Grid>
                   <Grid item xs={12}>
-                  <label>Pick the closest color</label>
-                    <CirclePicker  color={ formData.hex } width={"100%"} colors={lipstickColors} onChange={handleColorChange} />
+                    <div className="color-picker">
+                      <label>Pick the closest color</label>
+                      <CirclePicker color={formData.hex} width={"100%"} colors={lipstickColors} onChange={handleColorChange} />
+                    </div>
                     {/* <SliderPicker pointer={"cursor"}/> */}
                   </Grid>
                   <Grid item xs={12}>
@@ -344,7 +472,29 @@ const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData,
                   </Grid>
                   <Grid item x={12}>
                     <Grid item xs={12}>
-                      <input type="file" onChange={handleFileChange} />
+                      <label htmlFor="upload-button">
+                        <Button
+                          component="span"
+                          variant="contained"
+                          startIcon={<CloudUploadIcon />}
+                          className="button"
+                          sx={{
+                            bgcolor: '#bf2146',
+                            '&:hover': {
+                              bgcolor: '#bf2146'
+                            }
+                          }}
+                        >
+                          {fileName ? fileName : 'Upload file'}
+                        </Button>
+                        <input
+                          id="upload-button"
+                          type="file"
+                          accept=".jpg,.jpeg,.png" // Define accepted file types if needed
+                          style={{ display: 'none' }}
+                          onChange={handleFileChange}
+                        />
+                      </label>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
@@ -373,6 +523,8 @@ const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData,
             {filteredData.length > 0 ? (
               filteredData.map((review, index) => (
                 <Card
+                  fileName={fileName}
+                  setFileName={setFileName}
                   key={index}
                   index={index}
                   {...review}
