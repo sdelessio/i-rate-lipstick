@@ -45,13 +45,16 @@
     .uploaded-img {
         height: 200px;
         width: 200px;
-        // background-color: $gray;
-        margin-right: 1em;
+        background-color: white;
+        margin-right: 2em;
         display: flex;
         align-items: center;
         justify-content: center;
         background-size: contain;
         background-repeat: no-repeat;
+        background-position: center;
+        border: 3px solid $primary;
+        filter: drop-shadow(8px 7px 0px $primary);
     }
 
 
