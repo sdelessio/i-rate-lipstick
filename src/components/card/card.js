@@ -268,7 +268,7 @@ const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file
                         <input
                           id="upload-button"
                           type="file"
-                          accept=".jpg,.jpeg,.png" // Define accepted file types if needed
+                          accept=".jpg,.jpeg,.png"
                           style={{ display: 'none' }}
                           onChange={handleChangeImage}
                         />

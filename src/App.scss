@@ -79,6 +79,21 @@ body {
   height: 100%;
 }
 
+.title {
+  display: flex;
+  flex-direction: column;
+
+  p {
+    color: $white;
+    margin: 0;
+
+    @media (max-width: $mq-max-width) {
+      display: none;
+    }
+  }
+
+}
+
 .no-results {
   display: flex;
   justify-content: center;

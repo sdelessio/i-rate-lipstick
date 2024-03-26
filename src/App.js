@@ -186,7 +186,7 @@ const App = () => {
     <div className="app">
       <header>
 
-        <div className="title-container"><div className="logo"></div><h1>I Rate Lipstick</h1></div>
+        <div className="title-container"><div className="logo"></div><div className="title"><h1>LipOracle</h1><p>Reviewing My Lipstick Arsenal to Curb Impulsive Buys</p></div></div>
         {/* <div className="header-inner"> */}
 
 
