@@ -8,8 +8,9 @@ import Box from '@mui/material/Box';
 import { FormControl, FormLabel } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
+import { CirclePicker } from 'react-color';
 
-const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
+const Card = ({ index, hex, lipstickColors, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedReview, setEditedReview] = useState({ id, url, product_name, star_value, notes, brand, color, price });
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -24,6 +25,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
+    overflowY: 'scroll',
     p: 4,
   };
 
@@ -85,6 +87,15 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
     }));
   };
 
+  const handleColorChange = (color) => {
+    // Update formData with the new hex value
+    setEditedReview((prevState) => ({
+      ...prevState,
+      hex: color.hex,
+    }));
+  };
+
+
   const handleChangeImage = (event) => {
     const file = event.target.files[0];
     setFile(file);
@@ -99,16 +110,16 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
         <div className="card-content">
 
           <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}>
-            <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div>
+            {/* <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div> */}
           </div>
           <div className="details">
             <h2 className="brand">{brand}</h2>
             <h3 className="product">{product_name}</h3>
             <div className="chips">
-             
-              <div className="chip-span">
-                {/* <div className="color-circle"></div> */}
-                <p className="color chip">{color}</p>
+
+              <div className="color-span">
+                <div className="color-circle" style={{ backgroundColor: hex }}></div>
+                <p>{color}</p>
               </div>
               <div className="chip-span">
                 <p className="price chip">${price}</p>
@@ -132,7 +143,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
           <Grid container rowSpacing={1} columnSpacing={1} >
             <h3>Edit Review</h3>
             <Grid item xs={12}>
-              <FormControl component="fieldset">
+              <FormControl>
                 <FormLabel component="legend">Rating</FormLabel>
                 <Rating
                   name="rating"
@@ -174,7 +185,7 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
             <Grid item xs={6}>
               <TextField
                 id="color"
-                label="Color"
+                label="Color name"
                 variant="outlined"
                 required
                 value={editedReview.color}
@@ -204,8 +215,12 @@ const Card = ({ index, setFile, file, id, url, product_name, star_value, notes, 
                 helperText={editedReview.price === "" ? "This field is required" : ""}
                 FormHelperTextProps={{ sx: { ml: 0 } }}
               />
-
             </Grid>
+            <Grid item xs={12}>
+                <label>Pick the closest color</label>
+                <CirclePicker  color={ editedReview.hex } width={"100%"} colors={lipstickColors} onChange={handleColorChange} />
+                {/* <SliderPicker pointer={"cursor"}/> */}
+              </Grid>
             <Grid item xs={12}>
               <TextField
                 id="notes"

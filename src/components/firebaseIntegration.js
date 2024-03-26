@@ -13,6 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import Grid from '@mui/material/Grid';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { CirclePicker } from 'react-color';
 
 
 const style = {
@@ -24,10 +25,65 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
+  overflowY: 'scroll',
   p: 4,
 };
 
-const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmitModalOpen, handleSubmitModalClose, submitModalOpen, setSubmitModalOpen, updateReview, setLipstickReviews, lipstickReviews, addReview, user }) => {
+const lipstickColors = [
+  // Shades of Red
+  "#FFA07A", // Light Salmon (Light)
+  "#FF4500", // Orange Red (Medium, Bright)
+  "#B22222", // Fire Brick (Dark)
+  "#FF0000", // Red (Pure, Bright)
+  "#8B0000", // Dark Red (Deep)
+  "#c12b27", // Medium greyish red
+
+  // Shades of Pink
+  "#FFB6C1", // Light Pink (Light, Less Saturated)
+  "#FFC0CB", // Pink (Bright)
+  "#FF69B4", // Hot Pink (Bright)
+  "#FF1493", // Deep Pink (Bright)
+  "#b94561", // Medium greyish pink
+
+  //Shades of Purple
+  "#DA70D6", // Orchid (Medium)
+  "#8A2BE2", // Blue Violet (Medium)
+  "#9932CC", // Dark Orchid (Medium, Less Saturated)
+  "#800080", // Purple (Pure)
+  "#7c294a", // Medium greyish purple
+
+  // Shades of Nude
+  "#FFDAB9", // Peach Puff (Light)
+  "#D2B48C", // Tan (Medium)
+  "#8B4513", // Saddle Brown (Dark)
+  "#772528", // Redder Nude
+
+  // Shades of Blue
+  "#ADD8E6", // Light Blue (Light, Less Saturated)
+  "#4169E1", // Royal Blue (Medium)
+  "#0000FF", // Blue (Pure)
+  "#191970", // Midnight Blue (Dark)
+  "#00008B", // Dark Blue (Deep)
+  "#184662", // Grey dark blue
+
+  // Shades of Green
+  "#2E8B57", // Sea Green (Medium)
+  "#006400", // Dark Green (Deep)
+  "#556B2F", // Dark Olive Green (Darker)
+  "#0e2c2b", // Really dark teal gree
+
+  // Neutral Shades
+  "#696969", // Dim Gray (Grey)
+  "#000000", // Black
+];
+
+
+
+
+
+
+
+const FirebaseIntegration = ({ selectedRank, searchQuery, formData, setFormData, deleteReview, handleSubmitModalOpen, handleSubmitModalClose, submitModalOpen, setSubmitModalOpen, updateReview, setLipstickReviews, lipstickReviews, addReview, user }) => {
 
   const storage = getStorage();
   const storageRef = ref(storage, 'gs://i-rate-lipstick.appspot.com');
@@ -40,6 +96,11 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
   const handleChange = (event) => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
+  };
+
+  const handleColorChange = (color) => {
+    // Update formData with the new hex value
+    setFormData({ ...formData, hex: color.hex });
   };
 
   const uploadImage = async () => {
@@ -58,9 +119,11 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
 
 
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true); // Set loading state to true when submitting
       if (file) {
         const imageURL = await uploadImage();
         console.log(typeof imageURL);
@@ -74,41 +137,58 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
       }
     } catch (error) {
       console.error('Error submitting review:', error.message);
+    } finally {
+      setLoading(false); // Set loading state back to false after submission
     }
   };
 
-
-
-
-  const handleDelete = (deletedReview, imgUrl) => {
-    const fileRef = ref(storage, imgUrl);
-    deleteObject(fileRef);
-    deleteReview(deletedReview)
+  const handleDelete = async (deletedReview, imgUrl) => {
+    try {
+      setLoading(true); // Set loading state to true when deleting
+      const fileRef = ref(storage, imgUrl);
+      await getDownloadURL(fileRef);
+      await deleteObject(fileRef);
+    } catch (error) {
+      console.error('File does not exist or cannot be accessed:', error);
+    } finally {
+      setLoading(false); // Set loading state back to false after deletion
+    }
+    deleteReview(deletedReview);
   };
+
+
 
   const handleEdit = async (updatedReview, imgUrl) => {
-    let updatedFormData;
-    if (file) {
-      if (updatedReview.url !== undefined && updatedReview.url !== '') {
-        const fileRef = ref(storage, imgUrl);
-        deleteObject(fileRef);
+    try {
+      setLoading(true); // Set loading state to true when editing
+      let updatedFormData;
+      if (file) {
+        if (updatedReview.url !== undefined && updatedReview.url !== '') {
+          const fileRef = ref(storage, imgUrl);
+          deleteObject(fileRef);
+        }
+        const imageURL = await uploadImage();
+        updatedFormData = { ...updatedReview, url: imageURL };
       }
-      const imageURL = await uploadImage();
-      updatedFormData = { ...updatedReview, url: imageURL };
+      else {
+        updatedFormData = { ...updatedReview, url: imgUrl };
+      }
+      updateReview(updatedFormData)
+      setFile(null)
+    } catch (error) {
+      console.error('Error editing review:', error.message);
+    } finally {
+      setLoading(false); // Set loading state back to false after editing
     }
-    else {
-      updatedFormData = { ...updatedReview, url: imgUrl };
-    }
-    updateReview(updatedFormData)
-    setFile(null)
   };
+
 
 
   // New state variables
-  const [searchQuery, setSearchQuery] = useState('');
+
   const [originalData, setOriginalData] = useState(lipstickReviews);
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedRank, setSelectedRank] = useState(null);
+
   const [file, setFile] = useState(null);
   const [eatenStatus, setEatenStatus] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -128,46 +208,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
     setLoading(false);
   }, [lipstickReviews]);
 
-  const handleStarClick = (starValue) => {
-    const newRank = selectedRank === starValue ? null : starValue;
-    setSelectedRank(newRank);
-  };
 
-
-
-  function handleStarHover(starValue) {
-    // Find the index of the hovered star
-    const hoveredStarIndex = [1, 2, 3, 4, 5].indexOf(starValue);
-
-    // Add the hovered class to the previous stars and the current hovered star
-    for (let i = 0; i <= hoveredStarIndex; i++) {
-      const starLabel = document.getElementById(`star-label-${i}`);
-      if (starLabel) {
-        starLabel.classList.add('hovered');
-        starLabel.classList.remove('unhovered'); // Remove unhovered class
-      }
-    }
-
-    // Add the unhovered class to the stars after the current hovered star
-    for (let i = hoveredStarIndex + 1; i <= 4; i++) {
-      const starLabel = document.getElementById(`star-label-${i}`);
-      if (starLabel) {
-        starLabel.classList.remove('hovered');
-        starLabel.classList.add('unhovered'); // Add unhovered class
-      }
-    }
-  }
-
-  function handleStarLeave() {
-    // Remove the hovered class from all stars and add unhovered class
-    for (let i = 0; i <= 4; i++) {
-      const starLabel = document.getElementById(`star-label-${i}`);
-      if (starLabel) {
-        starLabel.classList.remove('hovered');
-        starLabel.classList.remove('unhovered');
-      }
-    }
-  }
 
   const handleKeyDown = (event) => {
     if (event.key === '-' && (!event.target.value || event.target.value.startsWith('-'))) {
@@ -211,7 +252,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
+          <Box sx={style} >
 
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Submit a review
@@ -221,7 +262,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
               <form onSubmit={handleSubmit}>
                 <Grid container rowSpacing={1} columnSpacing={1} >
                   <Grid item xs={12}>
-                    <FormControl component="fieldset">
+                    <FormControl>
                       <FormLabel component="legend">Rating</FormLabel>
                       <Rating
                         name="rating"
@@ -256,7 +297,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                   <Grid item xs={6}>
                     <TextField
                       id="color"
-                      label="Color"
+                      label="Color name"
                       variant="outlined"
                       required
                       value={formData.color}
@@ -283,6 +324,12 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
 
                   </Grid>
                   <Grid item xs={12}>
+                  <label>Pick the closest color</label>
+                    <CirclePicker  color={ formData.hex } width={"100%"} colors={lipstickColors} onChange={handleColorChange} />
+                    {/* <SliderPicker pointer={"cursor"}/> */}
+                  </Grid>
+                  <Grid item xs={12}>
+
                     <TextField
                       id="notes"
                       label="Notes"
@@ -317,93 +364,10 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
           </Box>
         </Modal>
 
-        {/* <p>Reviewing the lipsticks I have so I stop buying garbage</p> */}
-        <div className="search-rank-container">
-          <div className="rank-container">
-            <div className="star-radios">
-              {[1, 2, 3, 4, 5].map((starValue, index) => (
-                <label
-                  key={starValue}
-                  id={`star-label-${index}`}
-                  className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
-                  onMouseEnter={() => handleStarHover(starValue)}
-                  onMouseLeave={handleStarLeave}
-                >
-                  <input
-                    type="radio"
-                    name="rankFilter"
-                    value={starValue}
-                    className="star-radio"
-                    checked={selectedRank === starValue}
-                    onChange={() => {
-                      handleStarClick(starValue);
-                    }}
-                  />
-                </label>
-              ))}
-            </div>
-            <div className="circle-radios">
-              {/* <label className="circle-radio">
-              <input
-                type="radio"
-                name="rankFilter"
-                value="unrated"
-                checked={selectedRank === "unrated"}
-                onChange={() => {
-                  setSelectedRank("unrated");
-                }}
-              />
-              Unrated
-            </label> */}
-              <label className="circle-radio">
-                <input
-                  type="radio"
-                  name="rankFilter"
-                  value=""
-                  checked={!selectedRank}
-                  onChange={() => {
-                    setSelectedRank(null);
-                  }}
-                />
-                Show All
-              </label>
-            </div>
-
-          </div>
-          <div className="search-container">
-            <div className="search-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#afb4bc"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </div>
-            <input
-              id="search"
-              label="Search reviews"
-              variant="filled"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              fullWidth
-              placeholder="Search review"
-            />
-
-          </div>
-        </div>
-
-
-
 
 
         {loading ? (
-          <div class="lds-hourglass"></div>
+          <div className="lds-hourglass"></div>
         ) : (
           <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
             {filteredData.length > 0 ? (
@@ -417,6 +381,7 @@ const FirebaseIntegration = ({ formData, setFormData, deleteReview, handleSubmit
                   user={user}
                   setFile={setFile}
                   file={file}
+                  lipstickColors={lipstickColors}
                 />
               ))
             ) : (

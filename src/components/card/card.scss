@@ -11,6 +11,7 @@
     color: $black;
     border-top: 1px solid $gray;
     padding: 3em 0em;
+    
 
 
 
@@ -28,11 +29,13 @@
 
     .inner-card {
         padding: 0 5rem;
+
     }
 
     .card-content {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+
     }
 
     .uploaded-img {
@@ -90,9 +93,7 @@
         color: $gray;
     }
 
-    .card-content {
-        align-items: center;
-    }
+
 
     .price {
         width: 100%;
@@ -133,9 +134,17 @@
 
     }
 
+    .color-span {
+        display: flex;
+        margin-right: 1em;
+        align-items: center;
+        width: fit-content;
+
+    }
+
     .color-circle {
-        height: .7em;
-        width: .7em;
+        height: 1em;
+        width: 1em;
         background-color: $secondary;
         border-radius: 100%;
         margin-right: .3em;

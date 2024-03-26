@@ -11,8 +11,6 @@ main, p {
 
 .body {
   max-width: 960px;
-  border-right: 1px solid $gray;
-  border-left: 1px solid $gray;
   margin: 0 auto;
 }
 
@@ -56,6 +54,10 @@ main {
   align-items: center;
   flex: 1;
   overflow-y: auto;
+  border-right: 1px solid $gray;
+  border-left: 1px solid $gray;
+  min-height: calc(100vh - 30px);
+  overflow-y: visible;
 
   @media (max-width: $mq-max-width) {
     margin: 0 1em;
@@ -65,13 +67,25 @@ main {
 .no-results,
 #content {
   color: $black;
-  margin-top: 0;
+  margin: 0;
   text-align: center;
   width: 100%;
+  height: 100%;
+  
+}
+
+
+.no-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  
 }
 
 .circle-radio{
   margin: 0em .25em;
+    color: $white;
 
 input[type="radio"] {
   appearance: none;
@@ -130,9 +144,7 @@ input[type="radio"]:checked::before {
   }
 }
 
-label {
-  // color: $white;
-}
+
 
 header {
   background-color: $primary;
@@ -140,6 +152,10 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 1em;
+
+  .header-inner {
+    display: flex;
+  }
 
   button {
     margin: .5em;
@@ -233,11 +249,12 @@ header {
 
 
 .search-rank-container {
-  width: 100%;
+  // width: 100%;
   display: flex;
-  justify-content: space-around;
-  padding: 1em;
+  justify-content: flex-end;
+  // padding: 1em;
   align-items:center;
+
 
 
   .search-container {
@@ -267,7 +284,7 @@ header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    // margin: 1em 0 0;
+    margin: 0 1em 0;
   
     .star-radios {
       display: flex;
@@ -387,8 +404,8 @@ input[type="text"] {
   height: 0;
   margin: 8px;
   box-sizing: border-box;
-  border: 32px solid #fff;
-  border-color: #fff transparent #fff transparent;
+  border: 32px solid $secondary;
+  border-color: $secondary transparent $secondary transparent;
   animation: lds-hourglass 1.2s infinite;
 }
 @keyframes lds-hourglass {
