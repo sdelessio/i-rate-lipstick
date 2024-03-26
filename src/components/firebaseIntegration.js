@@ -15,6 +15,8 @@ import Grid from '@mui/material/Grid';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { CirclePicker } from 'react-color';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import logo from '../assets/images/logo.png'
+
 
 
 const style = {
@@ -537,7 +539,10 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
                 />
               ))
             ) : (
+              <>
+              <img className="no-results-logo" src={logo} />
               <p className="no-results">No results</p>
+              </>
             )}
           </pre>
         )}

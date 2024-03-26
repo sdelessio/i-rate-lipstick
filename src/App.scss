@@ -4,7 +4,8 @@
   // display: flex;
 }
 
-main, p {
+main,
+p {
   // font-family: $body-font;
 
 }
@@ -18,12 +19,17 @@ main, p {
   }
 }
 
-h1, h2, h3, p {
+h1,
+h2,
+h3,
+p {
   font-family: $display-font;
   font-weight: 400;
 }
 
-h2, h3, p {
+h2,
+h3,
+p {
   color: $primary;
 }
 
@@ -64,7 +70,8 @@ body {
   }
 }
 
-.no-results, #content {
+.no-results,
+#content {
   color: $black;
   margin: 0;
   text-align: center;
@@ -77,6 +84,10 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.no-results-logo {
+  height: 150px;
 }
 
 .circle-radio {
@@ -154,7 +165,9 @@ header {
   flex-direction: column;
 }
 
-.edit-modal-actions, .submit-modal-actions, .nested-modal-actions {
+.edit-modal-actions,
+.submit-modal-actions,
+.nested-modal-actions {
   display: flex;
   justify-content: flex-end;
 }
@@ -206,7 +219,8 @@ header {
 .color-picker {
   padding: 1em 0;
   border-radius: 4px;
-  .circle-picker  {
+
+  .circle-picker {
     margin-top: 1em;
   }
 }
@@ -230,7 +244,7 @@ header {
     font-family: $body-font;
 
     #search {
-      background-color: #e8e8e8;
+      background-color: mix($white, #b6a4ae, 70%);
       padding: 1em 2.4em;
       border: none;
       border-radius: 4px;
@@ -354,10 +368,12 @@ input[type="text"] {
     transform: rotate(0);
     animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
   }
+
   50% {
     transform: rotate(900deg);
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
+
   100% {
     transform: rotate(1800deg);
   }
