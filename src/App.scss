@@ -6,7 +6,7 @@
 
 main, p {
   // font-family: $body-font;
-  // width: 80vw;
+
 }
 
 .body {
@@ -15,12 +15,10 @@ main, p {
 
   @media (max-width: $mq-max-width) {
     max-width: 95vw;
-}
+  }
 }
 
-
-h1,
-h2, h3, p {
+h1, h2, h3, p {
   font-family: $display-font;
   font-weight: 400;
 }
@@ -52,33 +50,11 @@ body {
   background-color: $white;
 }
 
-.color-picker {
-  // border: 1px solid $gray;
-  padding: 1em 0;
-  border-radius: 4px;
-  .circle-picker  {
-    margin-top: 1em;
-  }
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  overflow-y: auto;
-  min-height: calc(100vh - 30px);
-  overflow-y: visible;
-  background-color: $white;
-
-  @media (max-width: $mq-max-width) {
-    margin: 0 1em;
-  }
-}
 .title-container {
   display: flex;
   align-items: center;
-  .logo{
+
+  .logo {
     height: 3em;
     width: 3em;
     background-image: url('./assets/images/logo.png');
@@ -88,87 +64,55 @@ main {
   }
 }
 
-.no-results,
-#content {
+.no-results, #content {
   color: $black;
   margin: 0;
   text-align: center;
   width: 100%;
   height: 100%;
-  
 }
-
 
 .no-results {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  
 }
 
-.circle-radio{
+.circle-radio {
   margin: 0em .25em;
-    color: $black;
+  color: $black;
 
-input[type="radio"] {
-  appearance: none;
-  background-color: #fff;
-  margin: 0;
-  margin-right: .2em;
-  font: inherit;
-  color: currentColor;
-  width: 1.15em;
-  height: 1.15em;
-  border: 0.1em solid $secondary;
-  border-radius: 50%;
-  transform: translateY(-0.075em);
-  display: grid;
-  place-content: center;
-}
+  input[type="radio"] {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    margin-right: .2em;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.1em solid $secondary;
+    border-radius: 50%;
+    transform: translateY(-0.075em);
+    display: grid;
+    place-content: center;
+  }
 
-input[type="radio"]::before {
-  content: "";
-  width: 0.65em;
-  height: 0.65em;
-  border-radius: 50%;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em $secondary;
-}
+  input[type="radio"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em $secondary;
+  }
 
-input[type="radio"]:checked::before {
-  transform: scale(1);
-}
-
-
-}
-
-.hero {
-  // width: 100vw;
-  // display: flex;
-  // flex-direction: row;
-  // align-items: center;
-  // flex: 1;
-  // height: 100vh;
-  // // background-image: url("./assets/images/lip.png");
-  // background-size: contain;
-  // background-position: center;
-  // position: fixed;
-  // z-index: -1000;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    // background-color: rgba($primary, .4);
+  input[type="radio"]:checked::before {
+    transform: scale(1);
   }
 }
-
-
 
 header {
   background-color: $primary;
@@ -194,36 +138,23 @@ header {
     }
 
     &:hover:not(:disabled) {
-      // background-color: mix($secondary, black, 90%);
       text-decoration: underline;
       cursor: pointer;
     }
   }
 }
 
-.modal-grid{
+.modal-grid {
   display: flex;
 }
 
-.rating-container{
-  width:100%;
+.rating-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.edit-modal-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.submit-modal-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-
-
-.nested-modal-actions {
+.edit-modal-actions, .submit-modal-actions, .nested-modal-actions {
   display: flex;
   justify-content: flex-end;
 }
@@ -234,7 +165,7 @@ header {
   bottom: 2em;
   right: 2em;
 
-  .submit-button{
+  .submit-button {
     height: 4em;
     width: 4em;
     color: white;
@@ -268,36 +199,38 @@ header {
   cursor: pointer;
 
   &:hover {
-      background-color: mix($secondary, $black, 85%);
+    background-color: mix($secondary, $black, 85%);
   }
 }
 
-
+.color-picker {
+  padding: 1em 0;
+  border-radius: 4px;
+  .circle-picker  {
+    margin-top: 1em;
+  }
+}
 
 .search-rank-container {
   width: 100%;
   display: flex;
   padding: 1em 0;
-  align-items:center;
+  align-items: center;
   width: 100%;
   justify-content: flex-end;
 
   @media (max-width: $mq-max-width) {
     flex-flow: column;
-    align-items:  center;
+    align-items: center;
     justify-content: center;
   }
 
-
-
   .search-container {
     position: relative;
-  font-family: $body-font;
-   
+    font-family: $body-font;
 
     #search {
       background-color: #e8e8e8;
-      // padding-left: 30px;
       padding: 1em 2.4em;
       border: none;
       border-radius: 4px;
@@ -307,47 +240,39 @@ header {
 
     .search-icon {
       position: absolute;
-      left: 10px; 
+      left: 10px;
       top: 50%;
       transform: translateY(-50%);
-      width: 20px; 
+      width: 20px;
       height: 20px;
     }
   }
+
   .rank-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin: 1em;
+
     @media (max-width: $mq-max-width) {
       margin: .5em;
     }
-  
+
     .star-radios {
       display: flex;
       justify-content: center;
     }
-  
+
     .circle-radios {
       display: flex;
     }
   }
 }
 
-
 input[type="text"] {
   width: 40vw;
-  /* Adjust the width as needed */
-  // height: 50px;
-  /* Adjust the height as needed */
-  // border-radius: 100px;
   border: none !important;
-  // padding: 0 30px 0 10px;
-  // border: 2px solid white;
   background-color: white;
-  // color: $white;
-  // font-weight: bold;
-  /* Adjust the padding to make room for the icon */
 
   &::placeholder {
     color: $gray;
@@ -361,22 +286,8 @@ input[type="text"] {
 .search-icon {
   position: absolute;
   right: 10px;
-  /* Adjust the distance from the right */
-  cursor: pointer;
 }
 
-
-
-/* Optional: Style the SVG icon */
-.search-icon svg {
-  width: 16px;
-  /* Adjust the icon size */
-  height: 16px;
-  fill: #333;
-  /* Adjust the icon color */
-}
-
-// Style the radio input
 .circle-radio {
   display: flex;
   align-items: center;
@@ -390,15 +301,10 @@ input[type="text"] {
       height: 1em;
     }
   }
-
-
 }
-
-
 
 .star-radio {
   display: none;
-  /* Hide the actual radio button */
 }
 
 .star-label {
@@ -406,19 +312,15 @@ input[type="text"] {
   width: 1.5em;
   height: 1.5em;
   margin: .1em;
-  /* Adjust the height as needed */
   background-image: url('./assets/images/emptyStar3D.webp');
-  /* Replace with the path to your star icon */
   background-size: contain;
-  cursor: pointer;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
-
 
 .star-label.selected,
 .hovered {
   background-image: url('./assets/images/fullStar.webp');
-  /* Replace with the path to your star icon */
 }
 
 .selected {
@@ -433,6 +335,7 @@ input[type="text"] {
   width: 80px;
   height: 80px;
 }
+
 .lds-hourglass:after {
   content: " ";
   display: block;
@@ -445,6 +348,7 @@ input[type="text"] {
   border-color: $secondary transparent $secondary transparent;
   animation: lds-hourglass 1.2s infinite;
 }
+
 @keyframes lds-hourglass {
   0% {
     transform: rotate(0);
