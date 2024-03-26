@@ -166,6 +166,19 @@ const App = () => {
   };
 
 
+  const getUserInitials = (displayName) => {
+    if (!displayName) return '';
+
+    const initials = displayName
+      .split(' ')
+      .map((name) => name[0])
+      .join('')
+      .toUpperCase();
+
+    return initials;
+  };
+
+
 
 
 
@@ -174,57 +187,66 @@ const App = () => {
       <header>
 
         <div className="title-container"><div className="logo"></div><h1>I Rate Lipstick</h1></div>
-        <div className="header-inner">
+        {/* <div className="header-inner"> */}
 
 
 
-          {user ? (
-            <>
-              <Button
-                id="user-menu-button"
-                aria-controls={userMenuOpen ? 'user-menu-button' : undefined}
-                aria-haspopup="true"
-                aria-expanded={userMenuOpen ? 'true' : undefined}
-                onClick={handleUserMenuClick}
-                sx={{
-                  bgcolor: '#bf2146',
-                  color: '#fff',
-                  '&:hover': {
-                    bgcolor: '#bf2146'
-                  }
-                }}
-              >
-                {user.displayName}
-              </Button>
-              <Menu
-                id="user-menu"
-                aria-labelledby="user-menu"
-                anchorEl={anchorEl}
-                open={userMenuOpen}
-                onClose={handleUserMenuClose}
-                
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                <MenuItem onClick={handleSubmitModalOpen}>Submit a reivew</MenuItem>
-                <MenuItem onClick={handleSignOut}>Logout</MenuItem>
-              </Menu>
-            </>
-          ) : (
-            <Button sx={{
+        {user ? (
+          <>
+            <Button
+              id="user-menu-button"
+              aria-controls={userMenuOpen ? 'user-menu-button' : undefined}
+              aria-haspopup="true"
+              aria-expanded={userMenuOpen ? 'true' : undefined}
+              onClick={handleUserMenuClick}
+              sx={{
+                bgcolor: '#bf2146',
+                // borderRadius: '100%',
+                height: '2em',
+                width: '2em',
+                color: '#fff',
+                '&:hover': {
+                  bgcolor: '#bf2146'
+                }
+              }}
+            >
+              {getUserInitials(user.displayName)}
+            </Button>
+            <Menu
+              id="user-menu"
+              aria-labelledby="user-menu"
+              anchorEl={anchorEl}
+              open={userMenuOpen}
+              onClose={handleUserMenuClose}
+
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem onClick={handleSubmitModalOpen}>Submit a review</MenuItem>
+              <MenuItem onClick={handleSignOut}>Logout</MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <Button
+            sx={{
               bgcolor: '#bf2146',
               '&:hover': {
                 bgcolor: '#bf2146'
               }
-            }} variant="contained" onClick={signInWithGoogle}>Sign in with Google</Button>
-          )}
-        </div>
+            }}
+            variant="contained"
+            onClick={signInWithGoogle}
+          >
+            Sign in with Google
+          </Button>
+        )}
+
       </header>
 
       <FirebaseIntegration setFileName={setFileName} fileName={fileName} formData={formData} setFormData={setFormData} deleteReview={deleteReview} handleSubmitModalClose={handleSubmitModalClose} handleSubmitModalOpen={handleSubmitModalOpen} submitModalOpen={submitModalOpen} setSubmitModalOpen={setSubmitModalOpen} user={user} updateReview={updateReview} addReview={addReview} lipstickReviews={lipstickReviews} setLipstickReviews={setLipstickReviews} />
