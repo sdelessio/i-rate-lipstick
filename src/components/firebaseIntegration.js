@@ -367,7 +367,7 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
                 variant="filled"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search review"
+                placeholder="Search reviews"
               />
 
             </div>
