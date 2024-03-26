@@ -11,6 +11,8 @@
     border-top: 1px solid $gray;
     padding: 3em 0em;
 
+    
+   
 
 
 
@@ -22,12 +24,15 @@
 
 
 
-    @media (max-width: $mq-max-width) {
-        // width: 90vw;
-    }
+   
 
     .inner-card {
         padding: 0 5rem;
+
+        @media (max-width: $mq-max-width) {
+            // flex-direction: column;
+            padding: 0;
+        }
 
     }
 
@@ -54,7 +59,14 @@
         background-repeat: no-repeat;
         background-position: center;
         border: 3px solid $primary;
+        margin-bottom: 0;
         filter: drop-shadow(8px 7px 0px $primary);
+        @media (max-width: $mq-max-width) {
+           width: 100%;
+           filter: none;
+           margin-right: 0;
+           margin-bottom: 1em;
+        }
     }
 
 

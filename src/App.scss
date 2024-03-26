@@ -12,6 +12,10 @@ main, p {
 .body {
   max-width: 960px;
   margin: 0 auto;
+
+  @media (max-width: $mq-max-width) {
+    max-width: 95vw;
+}
 }
 
 
@@ -63,8 +67,6 @@ main {
   align-items: center;
   flex: 1;
   overflow-y: auto;
-  border-right: 1px solid $gray;
-  border-left: 1px solid $gray;
   min-height: calc(100vh - 30px);
   overflow-y: visible;
   background-color: $white;
@@ -75,6 +77,7 @@ main {
 }
 .title-container {
   display: flex;
+  align-items: center;
   .logo{
     height: 3em;
     width: 3em;
