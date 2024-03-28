@@ -104,16 +104,15 @@ const App = () => {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      if (user) {
-        const reviewsCollection = collection(db, 'lipstick_reviews');
-        const reviewsSnapshot = await getDocs(reviewsCollection);
-        const reviewsData = reviewsSnapshot.docs.map(doc => doc.data());
-        setLipstickReviews(reviewsData);
-      }
+      const reviewsCollection = collection(db, 'lipstick_reviews');
+      const reviewsSnapshot = await getDocs(reviewsCollection);
+      const reviewsData = reviewsSnapshot.docs.map(doc => doc.data());
+      setLipstickReviews(reviewsData);
     };
-
+  
     fetchReviews();
-  }, [user]);
+  }, []);
+  
 
   const addReview = async (reviewData) => {
     try {
