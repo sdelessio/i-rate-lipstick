@@ -227,7 +227,7 @@ const App = () => {
                 horizontal: 'left',
               }}
             >
-             {user === 'sara.delessio@gmail.com' ? <MenuItem onClick={handleSubmitModalOpen}>Submit a review</MenuItem> : '' }
+             {user.email === 'sara.delessio@gmail.com' ? <MenuItem onClick={handleSubmitModalOpen}>Submit a review</MenuItem> : '' }
               <MenuItem onClick={handleSignOut}>Logout</MenuItem>
             </Menu>
           </>
@@ -249,7 +249,7 @@ const App = () => {
       </header>
 
       <FirebaseIntegration setFileName={setFileName} fileName={fileName} formData={formData} setFormData={setFormData} deleteReview={deleteReview} handleSubmitModalClose={handleSubmitModalClose} handleSubmitModalOpen={handleSubmitModalOpen} submitModalOpen={submitModalOpen} setSubmitModalOpen={setSubmitModalOpen} user={user} updateReview={updateReview} addReview={addReview} lipstickReviews={lipstickReviews} setLipstickReviews={setLipstickReviews} />
-      {user === 'sara.delessio@gmail.com' &&
+      {user.email === 'sara.delessio@gmail.com' &&
         <div className="submit-button-container">
           <Tooltip title="Submit a review">
             <button onClick={handleSubmitModalOpen} className="submit-button" aria-label="delete">

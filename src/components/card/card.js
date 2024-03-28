@@ -132,7 +132,7 @@ const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file
             </div>
             <Rank rank={star_value} />
             <p className="notes">{notes}</p>
-            {user === 'sara.delessio@gmail.com' && <div className="footer">
+            {user.email === 'sara.delessio@gmail.com' && <div className="footer">
               <button className="button" onClick={handleEdit}>Edit</button>
             </div>}
           </div>
