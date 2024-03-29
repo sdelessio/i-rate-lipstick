@@ -11,7 +11,7 @@ import Grid from '@mui/material/Grid';
 import { CirclePicker } from 'react-color';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
+const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedReview, setEditedReview] = useState({ id, url, product_name, star_value, notes, brand, color, price });
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -31,7 +31,7 @@ const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file
     overflowY: 'auto', // Set overflowY to auto to enable vertical scrolling
     p: 4,
   };
-  
+
   const refreshForm = () => {
     setFile(null)
     setTempImg(false);
@@ -113,10 +113,18 @@ const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file
     <div className={`card ${!star_value ? 'inactive' : ''}`}>
       <div className="inner-card">
         <div className="card-content">
+          {link !== '' ? (
+            <a href={link} target="_blank" rel="noreferrer nofollow">
+              <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}>
+                {/* <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div> */}
+              </div>
+            </a>
+          ) : (
+            <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}>
+              {/* <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div> */}
+            </div>
+          )}
 
-          <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}>
-            {/* <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div> */}
-          </div>
           <div className="details">
             <h2 className="brand">{brand}</h2>
             <h3 className="product">{product_name}</h3>
@@ -222,12 +230,22 @@ const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file
               />
             </Grid>
             <Grid item xs={12}>
-              <div className="color-picker"> 
+              <TextField
+                id="link"
+                label="Link (optional)"
+                variant="outlined"
+                value={editedReview.link}
+                onChange={handleChange}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <div className="color-picker">
                 <label>Pick the closest color</label>
-                <CirclePicker  color={ editedReview.hex } width={"100%"} colors={lipstickColors} onChange={handleColorChange} />
-                </div>
-                {/* <SliderPicker pointer={"cursor"}/> */}
-              </Grid>
+                <CirclePicker color={editedReview.hex} width={"100%"} colors={lipstickColors} onChange={handleColorChange} />
+              </div>
+              {/* <SliderPicker pointer={"cursor"}/> */}
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 id="notes"
@@ -247,33 +265,33 @@ const Card = ({ fileName, setFileName, index, hex, lipstickColors, setFile, file
             <Grid item xs={12}>
               {/* Display the uploaded image */}
 
-              <div className="edit-file-input"> 
-              {url && !tempImg && <img className="prev-img" src={url} alt="Uploaded" />}
-              <label htmlFor="upload-button">
-                
-                        <Button
-                          component="span"
-                          variant="contained"
-                          startIcon={<CloudUploadIcon />}
-                          className="button"
-                          sx={{
-                            bgcolor: '#bf2146',
-                            '&:hover': {
-                              bgcolor: '#bf2146'
-                            }
-                          }}
-                        >
-                           {fileName ? fileName : 'Upload file'}
-                        </Button>
-                        <input
-                          id="upload-button"
-                          type="file"
-                          accept=".jpg,.jpeg,.png"
-                          style={{ display: 'none' }}
-                          onChange={handleChangeImage}
-                        />
-                      </label>
-                      </div>
+              <div className="edit-file-input">
+                {url && !tempImg && <img className="prev-img" src={url} alt="Uploaded" />}
+                <label htmlFor="upload-button">
+
+                  <Button
+                    component="span"
+                    variant="contained"
+                    startIcon={<CloudUploadIcon />}
+                    className="button"
+                    sx={{
+                      bgcolor: '#bf2146',
+                      '&:hover': {
+                        bgcolor: '#bf2146'
+                      }
+                    }}
+                  >
+                    {fileName ? fileName : 'Upload file'}
+                  </Button>
+                  <input
+                    id="upload-button"
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    style={{ display: 'none' }}
+                    onChange={handleChangeImage}
+                  />
+                </label>
+              </div>
             </Grid>
             <Grid item xs={12}>
               <div className="edit-modal-actions">

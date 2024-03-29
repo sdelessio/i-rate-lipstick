@@ -296,32 +296,32 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
     <div className="body">
 
       <main>
-      <div className="search-rank-container">
-            <div className="rank-container">
-              <div className="star-radios">
-                {[1, 2, 3, 4, 5].map((starValue, index) => (
-                  <label
-                    key={starValue}
-                    id={`star-label-${index}`}
-                    className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
-                    onMouseEnter={() => handleStarHover(starValue)}
-                    onMouseLeave={handleStarLeave}
-                  >
-                    <input
-                      type="radio"
-                      name="rankFilter"
-                      value={starValue}
-                      className="star-radio"
-                      checked={selectedRank === starValue}
-                      onChange={() => {
-                        handleStarClick(starValue);
-                      }}
-                    />
-                  </label>
-                ))}
-              </div>
-              <div className="circle-radios">
-                {/* <label className="circle-radio">
+        <div className="search-rank-container">
+          <div className="rank-container">
+            <div className="star-radios">
+              {[1, 2, 3, 4, 5].map((starValue, index) => (
+                <label
+                  key={starValue}
+                  id={`star-label-${index}`}
+                  className={`star-label ${selectedRank >= starValue ? 'selected' : ''}`}
+                  onMouseEnter={() => handleStarHover(starValue)}
+                  onMouseLeave={handleStarLeave}
+                >
+                  <input
+                    type="radio"
+                    name="rankFilter"
+                    value={starValue}
+                    className="star-radio"
+                    checked={selectedRank === starValue}
+                    onChange={() => {
+                      handleStarClick(starValue);
+                    }}
+                  />
+                </label>
+              ))}
+            </div>
+            <div className="circle-radios">
+              {/* <label className="circle-radio">
               <input
                 type="radio"
                 name="rankFilter"
@@ -333,47 +333,47 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
               />
               Unrated
             </label> */}
-                <label className="circle-radio">
-                  <input
-                    type="radio"
-                    name="rankFilter"
-                    value=""
-                    checked={!selectedRank}
-                    onChange={() => {
-                      setSelectedRank(null);
-                    }}
-                  />
-                  Show all reviews
-                </label>
-              </div>
-
+              <label className="circle-radio">
+                <input
+                  type="radio"
+                  name="rankFilter"
+                  value=""
+                  checked={!selectedRank}
+                  onChange={() => {
+                    setSelectedRank(null);
+                  }}
+                />
+                Show all reviews
+              </label>
             </div>
-            <div className="search-container">
-              <div className="search-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#afb4bc"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
-                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-              </div>
-              <input
-                id="search"
-                label="Search reviews"
-                variant="filled"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search reviews"
-              />
 
-            </div>
           </div>
+          <div className="search-container">
+            <div className="search-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#afb4bc"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" fill="none" /> {/* Set the fill to white here */}
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </div>
+            <input
+              id="search"
+              label="Search reviews"
+              variant="filled"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search reviews"
+            />
+
+          </div>
+        </div>
         <Modal
           open={submitModalOpen}
           onClose={handleSubmitModalClose}
@@ -450,6 +450,16 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
                       fullWidth
                     />
 
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="link"
+                      label="Link (optional)"
+                      variant="outlined"
+                      value={formData.link}
+                      onChange={handleChange}
+                      fullWidth
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <div className="color-picker">
@@ -540,8 +550,8 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
               ))
             ) : (
               <>
-              <img className="no-results-logo" src={logo} />
-              <p className="no-results">No results</p>
+                <img className="no-results-logo" src={logo} />
+                <p className="no-results">No results</p>
               </>
             )}
           </pre>

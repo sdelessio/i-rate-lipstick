@@ -52,6 +52,7 @@ const App = () => {
     id: '',
     url: '',
     hex: '',
+    link: '',
   });
 
   const resetFormData = () => {
@@ -65,6 +66,7 @@ const App = () => {
       id: '',
       url: '',
       hex: '',
+      link: '',
     });
   }
 
