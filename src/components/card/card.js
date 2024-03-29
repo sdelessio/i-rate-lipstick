@@ -114,15 +114,9 @@ const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile
       <div className="inner-card">
         <div className="card-content">
           {link !== '' ? (
-            <a href={link} target="_blank" rel="noreferrer nofollow">
-              <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}>
-                {/* <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div> */}
-              </div>
-            </a>
+            <a className="uploaded-img" href={link} target="_blank" rel="noreferrer nofollow"  style={{ backgroundImage: `url(${url})` }}></a>
           ) : (
-            <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}>
-              {/* <div className={`img ${(star_value > 2.5) ? 'good' : (!star_value ? 'question' : 'bad')}`}></div> */}
-            </div>
+            <div className="uploaded-img" style={{ backgroundImage: `url(${url})` }}></div>
           )}
 
           <div className="details">
