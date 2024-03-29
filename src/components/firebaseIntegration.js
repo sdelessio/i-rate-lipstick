@@ -208,12 +208,14 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
       (row.brand && row.brand.toLowerCase().includes(searchQuery.toLowerCase())) || (row.product_name && row.product_name.toLowerCase().includes(searchQuery.toLowerCase()))
     );
     setFilteredData(filtered);
+    setLoading(false);
   }, [searchQuery, originalData, lipstickReviews]);
+  
 
 
   useEffect(() => {
+    setLoading(true);
     setOriginalData(lipstickReviews);
-    setLoading(false);
   }, [lipstickReviews]);
 
 
@@ -529,7 +531,10 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
 
 
         {loading ? (
+          <div className="loading-container">
           <div className="lds-hourglass"></div>
+          <p>Loading...</p>
+          </div>
         ) : (
           <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
             {filteredData.length > 0 ? (
