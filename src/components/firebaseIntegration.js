@@ -513,10 +513,10 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
                   </Grid>
                   <Grid item xs={12}>
                     <div className="submit-modal-actions">
-                      <Button onClick={handleSubmitModalClose} sx={{ mt: 2 }}>
+                      <button className="button secondary" onClick={handleSubmitModalClose} sx={{ mt: 2 }}>
                         Cancel
-                      </Button>
-                      <button className="button" type="submit" sx={{ mt: 2 }}>
+                      </button>
+                      <button className="button primary" type="submit" sx={{ mt: 2 }}>
                         Submit
                       </button>
 

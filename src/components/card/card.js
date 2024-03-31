@@ -135,7 +135,7 @@ const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile
             <Rank rank={star_value} />
             <p className="notes">{notes}</p>
             {user && user.email === 'sara.delessio@gmail.com' && <div className="footer">
-              <button className="button" onClick={handleEdit}>Edit</button>
+              <button className="button primary" onClick={handleEdit}>Edit</button>
             </div>}
           </div>
 
@@ -289,10 +289,10 @@ const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile
             </Grid>
             <Grid item xs={12}>
               <div className="edit-modal-actions">
-                <Button onClick={handleDelete}>Delete</Button>
+                <button className="button secondary" onClick={handleDelete}>Delete</button>
                 <div>
-                  <Button onClick={handleCancelEdit}>Cancel</Button>
-                  <button className="button" onClick={handleSaveEdit}>Save</button>
+                  <button className="button secondary" onClick={handleCancelEdit}>Cancel</button>
+                  <button className="button primary" onClick={handleSaveEdit}>Save</button>
                 </div>
               </div>
             </Grid>
@@ -305,8 +305,8 @@ const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile
           <p >This action cannot be undone.</p>
           <Grid item xs={12}>
             <div className="nested-modal-actions">
-              <Button onClick={handleCancelDelete}>Cancel</Button>
-              <button className="button" onClick={handleConfirmDelete}>Delete Review</button>
+              <button className="button secondary" onClick={handleCancelDelete}>Cancel</button>
+              <button className="button primary" onClick={handleConfirmDelete}>Delete Review</button>
             </div>
           </Grid>
         </Box>
