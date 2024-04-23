@@ -137,16 +137,13 @@ const App = () => {
   const updateReview = async (updatedReview) => {
     try {
       const reviewDocRef = doc(db, "lipstick_reviews", updatedReview.id);
-      const currentReviewData = (await reviewDocRef.get()).data(); 
-      const currentDate = currentReviewData.dateAdded; 
-      await updateDoc(reviewDocRef, { ...updatedReview, dateAdded: currentDate }); 
       console.log("Review updated successfully");
   
       // Update the local state with the updated review
       setLipstickReviews(prevReviews => {
         const updatedReviews = prevReviews.map(review => {
           if (review.id === updatedReview.id) {
-            return { ...review, ...updatedReview, dateAdded: currentDate };
+            return { ...review, ...updatedReview };
           }
           return review;
         });
