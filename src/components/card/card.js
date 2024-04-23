@@ -11,11 +11,12 @@ import Grid from '@mui/material/Grid';
 import { CirclePicker } from 'react-color';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
+const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile, dateAdded, file, id, url, product_name, star_value, notes, brand, color, price, onDelete, onEdit, user }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedReview, setEditedReview] = useState({ id, url, product_name, star_value, notes, brand, color, price });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempImg, setTempImg] = useState(false);
+  const [readableDate, setReadableDate] = useState("");
 
   const style = {
     position: 'absolute',
@@ -31,6 +32,18 @@ const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile
     overflowY: 'auto', // Set overflowY to auto to enable vertical scrolling
     p: 4,
   };
+
+  useEffect(() => {
+    // Convert timestamp to a readable date format
+    if (dateAdded) {
+      const timestampInSeconds = dateAdded.seconds;
+      const milliseconds = timestampInSeconds * 1000;
+      const dateObject = new Date(milliseconds);
+      const formattedDate = dateObject.toLocaleDateString(); // Only date, no time
+      setReadableDate(formattedDate);
+    }
+  }, [dateAdded]);
+
 
   const refreshForm = () => {
     setFile(null)
@@ -120,7 +133,10 @@ const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile
           )}
 
           <div className="details">
+            <div className="name-date-wrapper">
             <h2 className="brand">{brand}</h2>
+            <h4 className="date-added">{readableDate}</h4>
+            </div>
             <h3 className="product">{product_name}</h3>
             <div className="chips">
 

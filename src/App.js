@@ -42,21 +42,8 @@ const App = () => {
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
   const [fileName, setFileName] = useState(null);
 
-  const [formData, setFormData] = useState({
-    brand: '',
-    product_name: '',
-    notes: '',
-    price: '',
-    color: '',
-    star_value: 0,
-    id: '',
-    url: '',
-    hex: '',
-    link: '',
-  });
 
-  const resetFormData = () => {
-    setFormData({
+    const [formData, setFormData] = useState({
       brand: '',
       product_name: '',
       notes: '',
@@ -67,8 +54,25 @@ const App = () => {
       url: '',
       hex: '',
       link: '',
+      dateAdded: null 
     });
-  }
+    
+    const resetFormData = () => {
+      setFormData({
+        brand: '',
+        product_name: '',
+        notes: '',
+        price: '',
+        color: '',
+        star_value: 0,
+        id: '',
+        url: '',
+        hex: '',
+        link: '',
+        dateAdded: null 
+      });
+    };
+    
 
   const handleSubmitModalOpen = () => {
     setSubmitModalOpen(true);
@@ -118,31 +122,31 @@ const App = () => {
 
   const addReview = async (reviewData) => {
     try {
+      const currentDate = new Date(); 
       const reviewsCollectionRef = collection(db, 'lipstick_reviews');
-      const docRef = await addDoc(reviewsCollectionRef, { ...reviewData, id: null }); // Pass reviewData along with id: null
+      const docRef = await addDoc(reviewsCollectionRef, { ...reviewData, id: null, dateAdded: currentDate }); 
       const docId = docRef.id;
       console.log("Review added successfully with ID:", docId);
-      await updateDoc(docRef, { id: docId }); // Update the document with the actual id
-      setLipstickReviews([...lipstickReviews, { ...reviewData, id: docId }]); // Update the state with the new review including the id
+      await updateDoc(docRef, { id: docId }); 
+      setLipstickReviews([...lipstickReviews, { ...reviewData, id: docId, dateAdded: currentDate }]); 
     } catch (error) {
       console.error("Error adding review:", error);
     }
   };
-
-
-
-
+  
   const updateReview = async (updatedReview) => {
     try {
       const reviewDocRef = doc(db, "lipstick_reviews", updatedReview.id);
-      await updateDoc(reviewDocRef, updatedReview);
+      const currentReviewData = (await reviewDocRef.get()).data(); 
+      const currentDate = currentReviewData.dateAdded; 
+      await updateDoc(reviewDocRef, { ...updatedReview, dateAdded: currentDate }); 
       console.log("Review updated successfully");
-
+  
       // Update the local state with the updated review
       setLipstickReviews(prevReviews => {
         const updatedReviews = prevReviews.map(review => {
           if (review.id === updatedReview.id) {
-            return { ...review, ...updatedReview };
+            return { ...review, ...updatedReview, dateAdded: currentDate };
           }
           return review;
         });
@@ -153,6 +157,7 @@ const App = () => {
       console.error("Error updating review:", error);
     }
   };
+  
 
   const deleteReview = async (deletedReview) => {
     console.log(deletedReview)

@@ -125,8 +125,6 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
   };
 
 
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -269,28 +267,42 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
 
 
   useEffect(() => {
-    // Filter the data based on the search query, rank, and eaten status
-    const filtered = originalData
-      .filter((row) =>
-        (row.brand && row.brand.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (row.product_name && row.product_name.toLowerCase().includes(searchQuery.toLowerCase()))
-      )
-      .filter((row) => {
-        if (selectedRank !== null) {
-          if (selectedRank === "unrated") {
-            return parseFloat(row.star_value) === 0;
-          } else {
-            const lowerBound = selectedRank - 0.5;
-            const upperBound = selectedRank;
-            const starRank = parseFloat(row.star_value);
-            return starRank >= lowerBound && starRank <= upperBound;
-          }
+    // Sort the originalData array by date initially
+    const sortedOriginalData = originalData.sort((a, b) => {
+      const timestampA = a.dateAdded.seconds;
+      const timestampB = b.dateAdded.seconds;
+      return timestampB - timestampA; // Descending order by default
+    });
+  
+    // Filter the sorted data based on the search query, rank, and other criteria
+    const filtered = sortedOriginalData.filter((row) =>
+      (row.brand && row.brand.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (row.product_name && row.product_name.toLowerCase().includes(searchQuery.toLowerCase()))
+    ).filter((row) => {
+      if (selectedRank !== null) {
+        if (selectedRank === "unrated") {
+          return parseFloat(row.star_value) === 0;
+        } else {
+          const lowerBound = selectedRank - 0.5;
+          const upperBound = selectedRank;
+          const starRank = parseFloat(row.star_value);
+          return starRank >= lowerBound && starRank <= upperBound;
         }
-        return true;
-      });
-
-    setFilteredData(filtered);
+      }
+      return true;
+    });
+  
+    // Re-sort the filtered data by date
+    const sortedFilteredData = filtered.sort((a, b) => {
+      const timestampA = a.dateAdded.seconds;
+      const timestampB = b.dateAdded.seconds;
+      return timestampB - timestampA; // Descending order by default
+    });
+  
+    // Set the sorted and filtered data
+    setFilteredData(sortedFilteredData);
   }, [searchQuery, selectedRank, originalData]);
+  
 
 
 

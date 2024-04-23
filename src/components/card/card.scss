@@ -19,6 +19,23 @@
         }
     }
 
+    .name-date-wrapper {
+        display: flex;
+        justify-content: space-around;
+
+        .brand {
+        flex: 1;
+        }
+    
+        .date-added{
+            width: fit-content;
+            text-align: right;
+            color: $gray;
+        }
+    }
+
+
+
     .card-content {
         display: flex;
         align-items: flex-start;
