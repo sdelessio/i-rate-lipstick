@@ -141,7 +141,7 @@ const Card = ({ link, fileName, setFileName, index, hex, lipstickColors, setFile
             <div className="chips">
 
               <div className="color-span">
-                <div className="color-circle" style={{ backgroundColor: hex }}></div>
+              <div className="color-circle" style={{ backgroundColor: hex, border: hex === '#FFFFFF' ? '1px solid #333333' : 'none' }}></div>
                 <p>{color}</p>
               </div>
               <div className="chip-span">
