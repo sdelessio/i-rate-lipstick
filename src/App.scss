@@ -192,13 +192,13 @@ header {
   justify-content: flex-end;
 }
 
-.submit-button-container {
+.submit-button-container, .top-button-container {
   position: fixed;
   padding: 1em;
   bottom: 2em;
   right: 2em;
 
-  .submit-button {
+  .submit-button, .top-button {
     height: 4em;
     width: 4em;
     color: white;

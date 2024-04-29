@@ -8,7 +8,7 @@ import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import Tooltip from '@mui/material/Tooltip';
 
 
@@ -77,6 +77,12 @@ const App = () => {
   const handleSubmitModalOpen = () => {
     setSubmitModalOpen(true);
   };
+
+  const scrollToTop = () => {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Operament
+  }
+
   const handleSubmitModalClose = () => {
     setFileName(null);
     resetFormData();
@@ -253,15 +259,15 @@ const App = () => {
       </header>
 
       <FirebaseIntegration setFileName={setFileName} fileName={fileName} formData={formData} setFormData={setFormData} deleteReview={deleteReview} handleSubmitModalClose={handleSubmitModalClose} handleSubmitModalOpen={handleSubmitModalOpen} submitModalOpen={submitModalOpen} setSubmitModalOpen={setSubmitModalOpen} user={user} updateReview={updateReview} addReview={addReview} lipstickReviews={lipstickReviews} setLipstickReviews={setLipstickReviews} />
-      {user && user.email === 'sara.delessio@gmail.com' &&
-        <div className="submit-button-container">
-          <Tooltip title="Submit a review">
-            <button onClick={handleSubmitModalOpen} className="submit-button" aria-label="delete">
-              <AddIcon />
+      
+        <div className="top-button-container">
+          <Tooltip title="Scroll to top">
+            <button onClick={scrollToTop} className="top-button" aria-label="Scroll to top">
+              <ArrowUpwardIcon />
             </button>
           </Tooltip>
         </div>
-      }
+      
     </div>
 
   )
