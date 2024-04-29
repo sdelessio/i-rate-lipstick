@@ -78,7 +78,7 @@ const App = () => {
     setSubmitModalOpen(true);
   };
 
-  let scrollButton = document.getElementById("top-button");
+  let scrollButton = document.getElementById("top-button-container");
   window.onscroll = function () { scrollFunction() };
 
   function scrollFunction() {
@@ -271,7 +271,7 @@ const App = () => {
 
       <FirebaseIntegration setFileName={setFileName} fileName={fileName} formData={formData} setFormData={setFormData} deleteReview={deleteReview} handleSubmitModalClose={handleSubmitModalClose} handleSubmitModalOpen={handleSubmitModalOpen} submitModalOpen={submitModalOpen} setSubmitModalOpen={setSubmitModalOpen} user={user} updateReview={updateReview} addReview={addReview} lipstickReviews={lipstickReviews} setLipstickReviews={setLipstickReviews} />
 
-      <div className="top-button-container">
+      <div className="top-button-container" id="top-button-container">
         <Tooltip title="Scroll to top">
           <button onClick={scrollToTop} className="top-button" id="top-button" aria-label="Scroll to top">
             <ArrowUpwardIcon />
