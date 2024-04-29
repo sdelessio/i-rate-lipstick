@@ -192,6 +192,10 @@ header {
   justify-content: flex-end;
 }
 
+#top-button {
+  display: none;
+}
+
 .submit-button-container, .top-button-container {
   position: fixed;
   padding: 1em;

@@ -43,7 +43,22 @@ const App = () => {
   const [fileName, setFileName] = useState(null);
 
 
-    const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
+    brand: '',
+    product_name: '',
+    notes: '',
+    price: '',
+    color: '',
+    star_value: 0,
+    id: '',
+    url: '',
+    hex: '',
+    link: '',
+    dateAdded: null
+  });
+
+  const resetFormData = () => {
+    setFormData({
       brand: '',
       product_name: '',
       notes: '',
@@ -54,29 +69,25 @@ const App = () => {
       url: '',
       hex: '',
       link: '',
-      dateAdded: null 
+      dateAdded: null
     });
-    
-    const resetFormData = () => {
-      setFormData({
-        brand: '',
-        product_name: '',
-        notes: '',
-        price: '',
-        color: '',
-        star_value: 0,
-        id: '',
-        url: '',
-        hex: '',
-        link: '',
-        dateAdded: null 
-      });
-    };
-    
+  };
+
 
   const handleSubmitModalOpen = () => {
     setSubmitModalOpen(true);
   };
+
+  let scrollButton = document.getElementById("top-button");
+  window.onscroll = function () { scrollFunction() };
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      scrollButton.style.display = "block";
+    } else {
+      scrollButton.style.display = "none";
+    }
+  }
 
   const scrollToTop = () => {
     document.body.scrollTop = 0; // For Safari
@@ -121,30 +132,30 @@ const App = () => {
       const reviewsData = reviewsSnapshot.docs.map(doc => doc.data());
       setLipstickReviews(reviewsData);
     };
-  
+
     fetchReviews();
   }, []);
-  
+
 
   const addReview = async (reviewData) => {
     try {
-      const currentDate = new Date(); 
+      const currentDate = new Date();
       const reviewsCollectionRef = collection(db, 'lipstick_reviews');
-      const docRef = await addDoc(reviewsCollectionRef, { ...reviewData, id: null, dateAdded: currentDate }); 
+      const docRef = await addDoc(reviewsCollectionRef, { ...reviewData, id: null, dateAdded: currentDate });
       const docId = docRef.id;
       console.log("Review added successfully with ID:", docId);
-      await updateDoc(docRef, { id: docId }); 
-      setLipstickReviews([...lipstickReviews, { ...reviewData, id: docId, dateAdded: currentDate }]); 
+      await updateDoc(docRef, { id: docId });
+      setLipstickReviews([...lipstickReviews, { ...reviewData, id: docId, dateAdded: currentDate }]);
     } catch (error) {
       console.error("Error adding review:", error);
     }
   };
-  
+
   const updateReview = async (updatedReview) => {
     try {
       const reviewDocRef = doc(db, "lipstick_reviews", updatedReview.id);
       console.log("Review updated successfully");
-  
+
       // Update the local state with the updated review
       setLipstickReviews(prevReviews => {
         const updatedReviews = prevReviews.map(review => {
@@ -160,7 +171,7 @@ const App = () => {
       console.error("Error updating review:", error);
     }
   };
-  
+
 
   const deleteReview = async (deletedReview) => {
     console.log(deletedReview)
@@ -237,7 +248,7 @@ const App = () => {
                 horizontal: 'left',
               }}
             >
-             {user && user.email === 'sara.delessio@gmail.com' ? <MenuItem onClick={handleSubmitModalOpen}>Submit a review</MenuItem> : '' }
+              {user && user.email === 'sara.delessio@gmail.com' ? <MenuItem onClick={handleSubmitModalOpen}>Submit a review</MenuItem> : ''}
               <MenuItem onClick={handleSignOut}>Logout</MenuItem>
             </Menu>
           </>
@@ -259,15 +270,15 @@ const App = () => {
       </header>
 
       <FirebaseIntegration setFileName={setFileName} fileName={fileName} formData={formData} setFormData={setFormData} deleteReview={deleteReview} handleSubmitModalClose={handleSubmitModalClose} handleSubmitModalOpen={handleSubmitModalOpen} submitModalOpen={submitModalOpen} setSubmitModalOpen={setSubmitModalOpen} user={user} updateReview={updateReview} addReview={addReview} lipstickReviews={lipstickReviews} setLipstickReviews={setLipstickReviews} />
-      
-        <div className="top-button-container">
-          <Tooltip title="Scroll to top">
-            <button onClick={scrollToTop} className="top-button" aria-label="Scroll to top">
-              <ArrowUpwardIcon />
-            </button>
-          </Tooltip>
-        </div>
-      
+
+      <div className="top-button-container">
+        <Tooltip title="Scroll to top">
+          <button onClick={scrollToTop} className="top-button" id="top-button" aria-label="Scroll to top">
+            <ArrowUpwardIcon />
+          </button>
+        </Tooltip>
+      </div>
+
     </div>
 
   )
