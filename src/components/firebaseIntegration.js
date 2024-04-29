@@ -44,12 +44,16 @@ const lipstickColors = [
   "#8B0000", // Dark Red (Deep)
   "#c12b27", // Medium greyish red
 
+
+
   // Shades of Pink
   "#FFB6C1", // Light Pink (Light, Less Saturated)
   "#FFC0CB", // Pink (Bright)
   "#FF69B4", // Hot Pink (Bright)
   "#FF1493", // Deep Pink (Bright)
   "#b94561", // Medium greyish pink
+  "#eb6867", // Pastel Fuscia
+  "#df7c6d", // Golden Coral
 
   //Shades of Purple
   "#DA70D6", // Orchid (Medium)
@@ -63,6 +67,8 @@ const lipstickColors = [
   "#D2B48C", // Tan (Medium)
   "#8B4513", // Saddle Brown (Dark)
   "#772528", // Redder Nude
+  "#d55e6b", // 'MAC See sheer' (coral nude)
+  "#b45f50", // Charlotte Tilbury "Very Victoria" (A little darker, red nude)
 
   // Shades of Blue
   "#ADD8E6", // Light Blue (Light, Less Saturated)
@@ -81,6 +87,7 @@ const lipstickColors = [
   // Neutral Shades
   "#696969", // Dim Gray (Grey)
   "#000000", // Black
+  "#FFFFFF", // White (Clear?)
 ];
 
 
