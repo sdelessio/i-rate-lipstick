@@ -16,6 +16,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'fire
 import { CirclePicker } from 'react-color';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import logo from '../assets/images/logo.png'
+import Loading from './loading/loading';
 
 
 
@@ -216,7 +217,7 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
     setFilteredData(filtered);
     setLoading(false);
   }, [searchQuery, originalData, lipstickReviews]);
-  
+
 
 
   useEffect(() => {
@@ -281,7 +282,7 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
       const timestampB = b.dateAdded.seconds;
       return timestampB - timestampA; // Descending order by default
     });
-  
+
     // Filter the sorted data based on the search query, rank, and other criteria
     const filtered = sortedOriginalData.filter((row) =>
       (row.brand && row.brand.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -299,18 +300,18 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
       }
       return true;
     });
-  
+
     // Re-sort the filtered data by date
     const sortedFilteredData = filtered.sort((a, b) => {
       const timestampA = a.dateAdded.seconds;
       const timestampB = b.dateAdded.seconds;
       return timestampB - timestampA; // Descending order by default
     });
-  
+
     // Set the sorted and filtered data
     setFilteredData(sortedFilteredData);
   }, [searchQuery, selectedRank, originalData]);
-  
+
 
 
 
@@ -551,10 +552,7 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
 
 
         {loading ? (
-          <div className="loading-container">
-          <div className="lds-hourglass"></div>
-          <p>Loading...</p>
-          </div>
+          <Loading />
         ) : (
           <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
             {filteredData.length > 0 ? (
