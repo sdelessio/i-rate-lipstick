@@ -54,7 +54,7 @@ const App = () => {
     url: '',
     hex: '',
     link: '',
-    dateAdded: null
+    dateAdded: null,
   });
 
   const resetFormData = () => {
@@ -69,10 +69,9 @@ const App = () => {
       url: '',
       hex: '',
       link: '',
-      dateAdded: null
+      dateAdded: null,
     });
-  };
-
+  }
 
   const handleSubmitModalOpen = () => {
     setSubmitModalOpen(true);
@@ -154,6 +153,7 @@ const App = () => {
   const updateReview = async (updatedReview) => {
     try {
       const reviewDocRef = doc(db, "lipstick_reviews", updatedReview.id);
+      await updateDoc(reviewDocRef, updatedReview);
       console.log("Review updated successfully");
 
       // Update the local state with the updated review
@@ -171,7 +171,6 @@ const App = () => {
       console.error("Error updating review:", error);
     }
   };
-
 
   const deleteReview = async (deletedReview) => {
     console.log(deletedReview)

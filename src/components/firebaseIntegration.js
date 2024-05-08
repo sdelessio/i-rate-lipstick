@@ -69,6 +69,7 @@ const lipstickColors = [
   "#772528", // Redder Nude
   "#d55e6b", // 'MAC See sheer' (coral nude)
   "#b45f50", // Charlotte Tilbury "Very Victoria" (A little darker, red nude)
+  "#a66153", // NYX sandstorm (Light pink brown)
 
   // Shades of Blue
   "#ADD8E6", // Light Blue (Light, Less Saturated)
