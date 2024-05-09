@@ -356,18 +356,19 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
               />
               Unrated
             </label> */}
-              <label className="circle-radio">
-                <input
-                  type="radio"
-                  name="rankFilter"
-                  value=""
-                  checked={!selectedRank}
-                  onChange={() => {
-                    setSelectedRank(null);
-                  }}
-                />
-                Show all reviews
-              </label>
+ 
+  <button
+   
+   className="button secondary"
+    onClick={() => {
+      setSelectedRank(null);
+    }}
+  >
+    Show all reviews
+  </button>
+
+
+              
             </div>
 
           </div>
