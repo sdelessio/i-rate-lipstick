@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Card from "./card/card"
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -18,7 +18,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import logo from '../assets/images/logo.png'
 import Loading from './loading/loading';
 
-
+const LazyCard = React.lazy(() => import('./card/card'));
 
 const style = {
   position: 'absolute',
@@ -550,14 +550,14 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
         </Modal>
 
 
-
+        <Suspense fallback={<div>Loading...</div>}>
         {loading ? (
           <Loading />
         ) : (
           <pre id="content" style={{ whiteSpace: 'pre-wrap' }}>
             {filteredData.length > 0 ? (
               filteredData.map((review, index) => (
-                <Card
+                <LazyCard
                   fileName={fileName}
                   setFileName={setFileName}
                   key={index}
@@ -579,6 +579,7 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
             )}
           </pre>
         )}
+         </Suspense>
       </main>
 
     </div>
