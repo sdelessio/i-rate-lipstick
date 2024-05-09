@@ -277,7 +277,12 @@ const App = () => {
           </button>
         </Tooltip>
       </div>
-
+      <footer>
+        <div className="title-container"><div className="logo"></div><div className="title"><h3>LipOracle</h3>
+          <p>App built by Sara DeLessio in React</p>
+        </div>
+        </div>
+      </footer>
     </div>
 
   )

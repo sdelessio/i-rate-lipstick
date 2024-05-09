@@ -580,6 +580,7 @@ const FirebaseIntegration = ({ fileName, setFileName, formData, setFormData, del
           </pre>
         )}
       </main>
+
     </div>
 
   );
